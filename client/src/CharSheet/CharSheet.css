@@ -1,0 +1,154 @@
+.CharSheetMain{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+button {
+    background-color: #dd7777;
+    border: 0px;
+    border-radius: 2px;
+}
+  
+.col {
+  flex: 1;
+  padding: 15px;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1{
+  text-align:center;
+  color: #E5383B;
+}
+
+h2 {
+  text-align:center;
+  color: #E5383B;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+span {
+    color: #E5383B;
+    text-decoration: underline;
+}
+textarea {
+    width: 100%;
+    background-color: rgb(196, 196, 196);
+}
+
+.StatList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.StatView {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    height: 80px;
+    font-size: 30px;
+    gap: 15px;
+    align-items: center;
+}
+
+.StatView input {
+    background-color: #dd7777;
+    font-size: 30px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+}
+
+.statTitle {
+    flex-grow: 2;
+}
+
+.RollButtons {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    width: 60px;
+    justify-self: flex-end;
+}
+.mainRoll {   
+    height: 25px;
+}
+
+.lowerBtnDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.lowerBtnDiv button {
+    height: 20px;
+    width: 27px;
+}
+
+.MoveDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.MoveDiv p {
+    flex: 2;
+}
+
+.moveAction {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    width: 20px;
+    height: 20px;
+}
+
+textarea {
+    font-size: 20px;
+}
+
+.Tracker {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Horizontal {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.Vertical {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.Text {
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+p {
+    margin: 10px;
+}
