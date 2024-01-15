@@ -1,3 +1,9 @@
+.CharSheet {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .CharSheetMain{
     display: flex;
     flex-direction: row;
@@ -6,8 +12,12 @@
     gap: 10px;
 }
 
+a {
+    color: #D75757;
+}
+
 button {
-    background-color: #dd7777;
+    background-color: #D75757;
     border: 0px;
     border-radius: 2px;
 }
@@ -21,9 +31,21 @@ button {
   align-items: center;
 }
 
+#moveCol {
+    flex: 3;
+}
+
+#trackerCol {
+    flex: 2;
+}
+
+#descCol {
+    max-width: 30%;
+}
+
 h1{
   text-align:center;
-  color: #E5383B;
+  color: white;
 }
 
 h2 {
@@ -37,23 +59,24 @@ span {
     color: #E5383B;
     text-decoration: underline;
 }
+
 textarea {
     width: 100%;
-    background-color: rgb(196, 196, 196);
+    background-color: rgb(224, 224, 224);
+    resize: vertical;
 }
 
 .StatList {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+    align-items: stretch;
+    width: 80%;
     gap: 20px;
 }
 
 .StatView {
     display: flex;
     flex-direction: row;
-    width: 70%;
     height: 80px;
     font-size: 30px;
     gap: 15px;
@@ -61,7 +84,9 @@ textarea {
 }
 
 .StatView input {
-    background-color: #dd7777;
+    background-color: #D75757;
+    border: black 2px;
+    border-radius: 5px;
     font-size: 30px;
     width: 80px;
     height: 80px;
@@ -82,6 +107,7 @@ textarea {
 }
 .mainRoll {   
     height: 25px;
+    background-color: #E5383B;
 }
 
 .lowerBtnDiv {
@@ -99,7 +125,34 @@ textarea {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
     gap: 5px;
+}
+
+.moveAvailable {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 0.5em;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.moveAvailable:checked {
+    background-color: #E5383B;
+}
+
+.check {
+    min-width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    background-color: transparent;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.check:checked{
+    background-color: #E5383B;
 }
 
 .MoveDiv p {
@@ -142,6 +195,12 @@ textarea {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    gap: 10px;
+}
+.verticalItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .Text {
@@ -151,4 +210,56 @@ textarea {
 
 p {
     margin: 10px;
+}
+
+.rollsView {
+    padding-top: 10px;
+    z-index: 2;
+    position:fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.RollResult {
+    font-size: 25px;
+    height: 50px;
+    background-color: black;
+    box-shadow: 0px 0px 10px  white;
+    border-radius: 25px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    padding-right: 5px;
+    margin-right: 15px;
+    margin-top: 20px;
+}
+
+.rollCloseBtn {
+    background-color: white;
+    color: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.Die {
+    color: white;
+    font-size: 30px;
+}
+
+.Highlight {
+    box-shadow: 0px 0px 10px  #fff2aa;
+    border-radius: 5px;
+}
+
+.Dismiss {
+    color: rgb(163, 163, 163);
 }

@@ -3,6 +3,6 @@ body {
   box-sizing: border-box;
   font-size: 20px;
   background-color: #161A1D;
-  color: white;
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  color: rgb(197, 197, 197);
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
