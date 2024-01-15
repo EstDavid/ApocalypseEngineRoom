@@ -1,0 +1,44 @@
+.Login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.LogoDiv {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    background-size: contain;
+}
+
+.fieldDiv {
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.LoginInput {
+    width: 100%;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.loginBtns {
+    margin-top: 30px;
+    padding: 30px;
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.loginBtns button {
+    font-size: 30px;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}

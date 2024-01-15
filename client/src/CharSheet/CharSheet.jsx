@@ -1,5 +1,4 @@
 import { DiceRoll } from '@dice-roller/rpg-dice-roller';
-import axios from "axios";
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import StatView from './StatView'
@@ -7,12 +6,11 @@ import Move from './Move'
 import Tracker from './Tracker'
 import './CharSheet.css'
 import RollResultView from './RollResultView'; 
+import roll_1 from '../assets/roll_1.mp3'
+import roll_2 from '../assets/roll_2.mp3'
+import roll_3 from '../assets/roll_3.mp3'
 
-const client = axios.create({
-    baseURL: "http://localhost:3000" 
-});
-
-function CharSheet() {
+function CharSheet({client}) {
     const [charInfo, setCharInfo] = useState({})
     const [moves, setMoves] = useState([])
     const [trackers, setTrackers] = useState([]) 
@@ -22,12 +20,12 @@ function CharSheet() {
 
     useEffect(()=> {
         if (queryParameters.get("CharID")) {
-            client.get(`/character/${queryParameters.get("CharID")}`).then((response) => {
+            client.get(`/character/${queryParameters.get("CharID")}`, {withCredentials: true}).then((response) => {
                 const partialCharInfo = response.data
 
-                const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`)
-                const moves_full = client.get(`/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`)
-                const trackers_full = client.get(`/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`)
+                const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true})
+                const moves_full = client.get(`/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true})
+                const trackers_full = client.get(`/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true})
 
                 Promise.all([playbook_full, moves_full, trackers_full]).then(function([playbook_full, moves_full, trackers_full]) {
                     const [pb, mvs, trks] = [playbook_full.data, moves_full.data, trackers_full.data]
@@ -54,7 +52,7 @@ function CharSheet() {
         client.post(`character/${queryParameters.get("CharID")}`, {
             "updatedField": "charDescription",
             "newVal": newText
-        })
+        }, {withCredentials: true})
         .then(function (response) {
             setCharInfo({
                 ...charInfo,
@@ -72,7 +70,7 @@ function CharSheet() {
             "newVal": stats.map((s) => {
                 if (s.name == statName) s.value = newVal
                 return s
-            })
+            }, {withCredentials: true})
         })
         .then(function (response) {
             setStats(response.data.stats)
@@ -89,7 +87,7 @@ function CharSheet() {
                 if (t.name == trackerName) {t.value = newText}
                 return {_id: t._id, value: t.value}
             })
-        })
+        }, {withCredentials: true})
         .then(function (response) {
             setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value}}))
         })
@@ -113,7 +111,7 @@ function CharSheet() {
                 }
                 return t
             })
-        })
+        }, {withCredentials: true})
         .then(function (response) {
             setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value}}))
         })
@@ -131,7 +129,7 @@ function CharSheet() {
                 if (m.name == toggledMove.name) m.isAvailable = !m.isAvailable
                 return m
             })
-        })
+        }, {withCredentials: true})
         .then(function (response) {
             setMoves(moves.map(m => {
                 const newAvailable = response.data.moves.find(charM => charM._id == m._id).isAvailable
@@ -159,6 +157,8 @@ function CharSheet() {
         return modText
     }
 
+    const rollSounds = [new Audio(roll_1), new Audio(roll_2), new Audio(roll_3)]
+
     const rollDice = (baseRoll, rollMod) => {
         var roll = baseRoll
         if (rollMod) {
@@ -168,6 +168,8 @@ function CharSheet() {
         roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod)).join('')
         setRolls([...rolls, new DiceRoll(roll)])
         setMoves(moves.map(m => {m.isModAdded = false; return m}))
+        const audio = 
+        rollSounds[Math.floor(Math.random()*rollSounds.length)].play()
     }
 
     const removeRoll = (rollIndex) => {

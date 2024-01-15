@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react'
 import './NewChar.css'
-import axios from "axios";
 import Select from 'react-select'
-// import { redirect } from "react-router-dom";
 
-const client = axios.create({
-  baseURL: "http://localhost:3000" 
-});
-
-function NewChar({userID}) {
+function NewChar({userID, client}) {
   const [playbookList, setPlaybookList] = useState([])
   const [systemsList, setSystemList] = useState([])
   const [selectedSystem, setSelectedSystem] = useState("")
@@ -17,7 +11,7 @@ function NewChar({userID}) {
   const [newCharName, setNewCharName] = useState("")
 
   useEffect(()=> {
-    client.get(`playbooks`).then((response) => {
+    client.get(`playbooks`, {withCredentials: true}).then((response) => {
       setPlaybookList(response.data)
       const sysList = [...new Set(response.data.map(pb => pb.systemName))].map((s) => {return { value: s, label: s }})
       setSystemList(sysList)
@@ -30,11 +24,10 @@ function NewChar({userID}) {
       system: selectedPlaybook.systemName, 
       playbook: selectedPlaybook.name, 
       name: newCharName, 
-      stats: selectedPlaybook.statsOptions[selectedStatsIndex],
-      owner: userID
+      stats: selectedPlaybook.statsOptions[selectedStatsIndex]
     }
 
-    client.post(`characters`, newCharInfo).then((response) => {
+    client.post(`characters`, newCharInfo, {withCredentials: true}).then((response) => {
       window.location.replace(`http://localhost:5173/CharacterSheet?CharID=${response.data}`,);
     })
   }

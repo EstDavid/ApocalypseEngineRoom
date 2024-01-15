@@ -14,11 +14,13 @@
 .NavBtn  {
     background-color: #161A1D;
     color: white;
-    padding: 5px;
-    font-size: 15px;
+    padding: 10px;
+    font-size: 25px;
     border: 0px;
     border-radius: 5px;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 ::-webkit-scrollbar {
