@@ -10,7 +10,7 @@ function startServer() {
   main().catch(err => console.log(err));
 
   async function main() {
-      await mongoose.connect('mongodb://127.0.0.1:27017/RPG_DB');
+      await mongoose.connect('mongodb+srv://danayachini:...ItsAllForYou.@d-cluster.yxwcju1.mongodb.net/RPG_DB');
   }
 }
 
