@@ -171,7 +171,6 @@ function CharSheet({client}) {
         roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod)).join('')
         setRolls([...rolls, new DiceRoll(roll)])
         setMoves(moves.map(m => {m.isModAdded = false; return m}))
-        const audio = 
         rollSounds[Math.floor(Math.random()*rollSounds.length)].play()
     }
 
