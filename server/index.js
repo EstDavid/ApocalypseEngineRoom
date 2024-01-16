@@ -14,7 +14,6 @@ app.use(cors({
   exposedHeaders: ['set-cookie']
 }))
 app.use(bodyParser.json())
-app.use(express.static('../client'))
 
 app.use('/', router)
 

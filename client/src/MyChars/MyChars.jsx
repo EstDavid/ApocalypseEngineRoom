@@ -19,7 +19,7 @@ function MyChars({userID, client}) {
 
     const deleteChar = (id) => {
         client.delete(`character/${id}`, {withCredentials: true}).then
-            (client.get(`characters`).then((response) => {
+            (client.get(`characters`, {withCredentials: true}).then((response) => {
                 setCharList(response.data)
             })    
         )
@@ -34,8 +34,14 @@ function MyChars({userID, client}) {
                     isMulti
                     name="filters"
                     options={[
-                      ...[...new Set(charList.map(c => c.system))].map((s) => {return {value: s, label: s}}),
-                      ...[...new Set(charList.map(c => c.playbook))].map((p) => {return {value: p, label: p}})
+                        {
+                          label: "Systems",
+                          options: [...new Set(charList.map(c => c.system))].map((s) => {return {value: s, label: s}})
+                        },
+                        {
+                          label: "Playbooks",
+                          options: [...new Set(charList.map(c => c.playbook))].map((p) => {return {value: p, label: p}})
+                        }
                     ]}
                     value={activeFilters}
                     onChange={setActiveFilters}

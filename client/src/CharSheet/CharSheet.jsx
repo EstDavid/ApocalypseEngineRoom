@@ -9,6 +9,8 @@ import RollResultView from './RollResultView';
 import roll_1 from '../assets/roll_1.mp3'
 import roll_2 from '../assets/roll_2.mp3'
 import roll_3 from '../assets/roll_3.mp3'
+import roll_4 from '../assets/roll_4.mp3'
+import roll_5 from '../assets/roll_5.mp3'
 
 function CharSheet({client}) {
     const [charInfo, setCharInfo] = useState({})
@@ -38,7 +40,8 @@ function CharSheet({client}) {
                         "charDescription": partialCharInfo.charDescription,
                         "playingThis": pb.playingThis,
                         "playbookDescription" : pb.description,
-                        "movesText": pb.movesText
+                        "movesText": pb.movesText,
+                        "notes": partialCharInfo.notes
                     });
                     setStats(partialCharInfo.stats)
                     setMoves(mvs.map((m) => {return {...m, isAvailable: partialCharInfo.moves.find(charM => charM._id == m._id).isAvailable}}))
@@ -48,15 +51,15 @@ function CharSheet({client}) {
         }
     }, [queryParameters])
 
-    const updateCharDesc = (newText) => {
+    const updateTextArea = (newText, fieldName) => {
         client.post(`character/${queryParameters.get("CharID")}`, {
-            "updatedField": "charDescription",
+            "updatedField": fieldName,
             "newVal": newText
         }, {withCredentials: true})
         .then(function (response) {
             setCharInfo({
                 ...charInfo,
-                "charDescription": response.data.charDescription
+                fieldName: response.data[fieldName]
             })
         })
         .catch(function (error) {
@@ -71,7 +74,7 @@ function CharSheet({client}) {
                 if (s.name == statName) s.value = newVal
                 return s
             }, {withCredentials: true})
-        })
+        } , {withCredentials: true})
         .then(function (response) {
             setStats(response.data.stats)
         })
@@ -157,7 +160,7 @@ function CharSheet({client}) {
         return modText
     }
 
-    const rollSounds = [new Audio(roll_1), new Audio(roll_2), new Audio(roll_3)]
+    const rollSounds = [roll_1, roll_2, roll_3, roll_4, roll_5].map(r => new Audio(r))
 
     const rollDice = (baseRoll, rollMod) => {
         var roll = baseRoll
@@ -193,18 +196,28 @@ function CharSheet({client}) {
                 id="CharDesc" 
                 rows="3" 
                 defaultValue={charInfo.charDescription} 
-                onChange={e => {updateCharDesc(e.target.value)}}
+                onChange={e => {updateTextArea(e.target.value, "charDescription")}}
             />
             <h2>Stats:</h2>
             <div className='StatList'>
                 {stats? stats.map(s => <StatView key={s.name} stat={s} handler={updateStat} rollDice={rollDice}></StatView>): ""}
             </div>
             {charInfo.playbookDescription ? charInfo.playbookDescription.map((par, i) => {return <p key={i}>{par}</p>}): ""}
-            {charInfo.playingThis ? <div>
+            {charInfo.playingThis && charInfo.playingThis.length ? <div>
                 <h2>Playing {charInfo.playbook}</h2>
                 {charInfo.playingThis.map((par, i) => {return <p key={i}>{par}</p>})}
             </div> :""}
-            <p>{charInfo.systemName} was made by {charInfo.madeBy}, and is available at: <a href={charInfo.available_at}>{charInfo.available_at}</a></p>
+            <div className='CreditDiv'>
+                <p>{charInfo.systemName} was made by {charInfo.madeBy}, and is available at: <a href={charInfo.available_at}>{charInfo.available_at}</a></p>
+            </div>
+            <h2>Notes:</h2>
+            <textarea 
+                name="Notes" 
+                id="Notes" 
+                rows="10" 
+                defaultValue={charInfo.notes} 
+                onChange={e => {updateTextArea(e.target.value, "notes")}}
+            />
         </div>
         <div className='col' id='moveCol'>
             

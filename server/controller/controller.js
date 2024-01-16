@@ -18,7 +18,7 @@ module.exports.getUser = async (req, res) => {
                 bcrypt.compare(password, user.password,  (err, result) => {
                 if (result == true) {
                    res.status(200);
-                   res.cookie('userID', user._id);
+                   res.cookie('userID', user._id, { maxAge: 7 * 60 * 60 * 1000});
                    res.send(user._id);
                 } else {
                     res.send('Wrong connection details');
@@ -51,7 +51,7 @@ module.exports.addUser = async (req, res) => {
                         name: username,
                         password: hash
                     }).then((createdUser) => {
-                        res.cookie('userID', createdUser._id);
+                        res.cookie('userID', createdUser._id, { maxAge: 60000 * 60 * 7});
                         res.send(createdUser._id);
                     })
                 });
@@ -102,14 +102,16 @@ module.exports.addChar = async (req, res) => {
         const moves_response = db.move.find({ system, "playbook" : { $in : ["basic", playbook]} }).select({ isAvailable: 1})
         
         Promise.all([trackers_response, moves_response]).then(function([trackers, moves]) {
-            const newChar = {owner: userID,
+            const newChar = {
+                owner: userID,
                 system, 
                 playbook, 
                 name, 
                 moves, 
                 trackers, 
                 stats, 
-                "charDescription": ""
+                "charDescription": "",
+                "notes": ""
             }
             db.character.create( newChar ).then((createdChar) => res.send(createdChar._id))
         })
@@ -157,7 +159,9 @@ module.exports.deleteChar = async (req, res) => {
         const userID = req.cookies.userID
         if (! userID) {throw('Bad Credendials')}
 
-        db.character.findOneAndDelete({_id: id, owner: userID}).then(()=>{res.send('Deleted')})
+        db.character.findOneAndDelete({_id: id, owner: userID}).then(async ()=>{
+            res.send('deleted')
+        })
         res.status(201);
     } catch (err) {
         console.log(err)

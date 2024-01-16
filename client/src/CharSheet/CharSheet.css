@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    padding-bottom: 50px;
 }
 
 .CharSheetMain{
@@ -14,6 +15,7 @@
 
 a {
     color: #D75757;
+    overflow-wrap:break-word;
 }
 
 button {
@@ -29,6 +31,10 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.CreditDiv{
+    width: 100%;
 }
 
 #moveCol {

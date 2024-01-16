@@ -21,6 +21,7 @@ const client = axios.create({
 
 function App() {
   const [userID, setUserID] = useState("")
+  const [loginIssue, setLoginIssue] = useState("")
 
   useEffect(() => {
     const cookieID = Cookies.get('userID');
@@ -29,13 +30,17 @@ function App() {
 
   const login = (username, password) => {
     client.post(`login`, {username, password} , {withCredentials: true}).then((response) => {
-      setUserID(response.data)
+      if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data)
+      else setUserID(response.data)
+    }).catch((err) => {
+      console.log(err)
     })
   }
 
   const signup = (username, password) => {
     client.post(`signup`, {username, password} , {withCredentials: true}).then((response) => {
-      setUserID(response.data)
+      if (response.data == 'Wrong connection details') setLoginIssue(response.data)
+      else setUserID(response.data)
     })
   }
 
@@ -67,7 +72,7 @@ function App() {
             </Link>
         </div>: ""}
         <Routes>
-          <Route path="/" element={userID.length ? <MyChars userID={userID} client={client}/> : <Login login={login} signup={signup} client={client}/>} />
+          <Route path="/" element={userID.length ? <MyChars userID={userID} client={client}/> : <Login login={login} signup={signup} client={client} loginIssue={loginIssue} />} />
           <Route path="/NewCharacter" element={<NewChar userID={userID} client={client}/>} />
           <Route path="/CharacterSheet" element={<CharSheet client={client}/>} />
         </Routes>

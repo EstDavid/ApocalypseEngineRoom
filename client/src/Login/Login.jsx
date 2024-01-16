@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './Login.css'
 import logo from "../assets/logo.png";
 
-function Login({login, signup}) {
+function Login({login, signup, loginIssue}) {
   const [username, setUsername] = useState("")
   const [password, setpassword] = useState("")
   return (
@@ -20,7 +20,7 @@ function Login({login, signup}) {
             <h2>Password</h2>
             <input className='LoginInput' type="password" name="password" defaultValue={password} onChange={e => setpassword(e.target.value)} autoComplete="off"/>  
           </div>
-  
+          {loginIssue.length ? <p className='WarningText'>{loginIssue}</p> : ""}
           <div className='loginBtns'>
             <button onClick={()=>{ login(username, password)}}>Log In</button>
             <button onClick={()=>{ signup(username, password)}}>Sign Up</button>

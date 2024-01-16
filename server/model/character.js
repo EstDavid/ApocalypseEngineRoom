@@ -15,7 +15,8 @@ module.exports = (mongoose)  => {
             }
         ],
         "stats": [{"name": String, "value": Number}],
-        "owner": String
+        "owner": String,
+        "notes": String
     })
     const model  = new mongoose.model("character", characterSchema)
     return {name: "character", model: model}

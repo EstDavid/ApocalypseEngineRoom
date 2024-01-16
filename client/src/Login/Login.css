@@ -14,17 +14,27 @@
     background-size: contain;
 }
 
-.fieldDiv {
+/* .CredDiv {
     width: 800px;
+} */
+
+.fieldDiv {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%
 }
 
 .LoginInput {
     width: 100%;
     font-size: 30px;
     padding: 10px;
+}
+
+.WarningText {
+    color: #E5383B;
+    padding: 20px;
+    text-align: center;
 }
 
 .loginBtns {
@@ -41,4 +51,5 @@
     color: white;
     padding: 15px;
     border-radius: 5px;
+    width: 200px;
 }
