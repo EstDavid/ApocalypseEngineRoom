@@ -67,9 +67,12 @@ span {
 }
 
 textarea {
+    padding-top: 5px;
+    padding-bottom: 5px;
     width: 100%;
     background-color: rgb(224, 224, 224);
     resize: vertical;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 .StatList {
@@ -101,6 +104,7 @@ textarea {
 
 .statTitle {
     flex-grow: 2;
+    font-size: 25px;
 }
 
 .RollButtons {

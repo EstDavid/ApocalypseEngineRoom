@@ -12,7 +12,7 @@ function Move({move, toggleMoveAvailable, toggleMoveAddMod, rollDice}) {
   return (
     <div className='MoveDiv'>
         <input className='moveAvailable' name={move.name} type="checkbox" checked={move.isAvailable} onChange={e => toggleMoveAvailable(move)}/>
-        <p><span>{move.name}:</span>  {move.description.match("\\[(.*)\\]") ? move.description : move.description}</p> 
+        <p><span>{move.name}:</span>  {move.description}</p> 
         <div className='moveAction'>{MoveActionMaker(move, toggleMoveAddMod, rollDice)}</div>
     </div>
   )

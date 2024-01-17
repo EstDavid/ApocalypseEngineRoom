@@ -1,7 +1,6 @@
 const express = require("express");
 const router = require("./router")
 const cors = require('cors')
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 require('dotenv').config()
@@ -15,10 +14,9 @@ app.use(cors({
   origin: 'http://localhost:5173',
   exposedHeaders: ['set-cookie']
 }))
-app.use(bodyParser.json())
+app.use(express.json())
 
-app.use('/', router)
-
+app.use(router)
 
 const PORT =  3000;
 
