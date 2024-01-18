@@ -11,7 +11,7 @@ app.use(session({secret: process.env.SECRET}));
 
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_ORIGIN,
   exposedHeaders: ['set-cookie']
 }))
 app.use(express.json())

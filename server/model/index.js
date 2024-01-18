@@ -3,6 +3,8 @@ const path  = require("path")
 const fs = require('fs')
 // require('dotenv').config()
 console.log(process.env.DATABASE_URL);
+const MONGO_DB_URI = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' ?
+process.env.DATABASE_REMOTE_TEST : process.env.DATABASE_REMOTE;
 
 const db = {}
 
@@ -12,7 +14,7 @@ function startServer() {
   main().catch(err => console.log(err));
 
   async function main() {
-      await mongoose.connect(process.env.DATABASE_REMOTE);
+      await mongoose.connect(MONGO_DB_URI);
   }
 }
 
