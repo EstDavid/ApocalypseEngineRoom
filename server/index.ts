@@ -1,7 +1,8 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import userRouter from './routers/user';
+import usersRouter from './routers/users';
+import charactersRouter from './routers/characters';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -42,7 +43,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/user', userRouter);
+app.use('/api/user', usersRouter);
+app.use('/api/characters', charactersRouter);
 
 const PORT = 3000;
 

@@ -11,27 +11,23 @@ export const getUser = async (req: Request, res: Response) => {
       res.send('Wrong connection details');
     }
 
-    User.find().then(users => {
-      console.log(users);
+    User.findOne({ name: username }).then((user) => {
+      if (!user) {
+        res.send('Wrong connection details');
+        res.status(500);
+      } else {
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (result == true) {
+            res.status(200);
+            res.cookie('userID', user._id, { maxAge: 7 * 60 * 60 * 1000 });
+            res.send(user._id);
+          } else {
+            res.send('Wrong connection details');
+            res.status(500);
+          }
+        });
+      }
     });
-
-    // User.findOne({ name: username }).then((user) => {
-    //   if (!user) {
-    //     res.send('Wrong connection details');
-    //     res.status(500);
-    //   } else {
-    //     bcrypt.compare(password, user.password, (err, result) => {
-    //       if (result == true) {
-    //         res.status(200);
-    //         res.cookie('userID', user._id, { maxAge: 7 * 60 * 60 * 1000 });
-    //         res.send(user._id);
-    //       } else {
-    //         res.send('Wrong connection details');
-    //         res.status(500);
-    //       }
-    //     });
-    //   }
-    // });
 
     res.status(200);
   } catch (err) {
