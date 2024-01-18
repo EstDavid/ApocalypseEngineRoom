@@ -1,13 +1,20 @@
 import express, { Express, Request, Response } from 'express';
-require('dotenv').config();
+import 'dotenv/config';
 // import router from './router';
 import cors from 'cors';
-const cookieParser = require('cookie-parser');
-// const session = require('express-session');
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 const app: Express = express();
+const secret = process.env.SECRET;
 app.use(cookieParser());
-// app.use(session({ secret: process.env.SECRET }));
+
+console.log('secretsss', secret);
+
+if (!secret) {
+  throw new Error('No secret provided');
+}
+app.use(session({ secret: secret }));
 
 app.use(cors({
   credentials: true,
