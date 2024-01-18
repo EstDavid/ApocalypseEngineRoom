@@ -1,9 +1,30 @@
 import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
-// import router from './router';
+import mongoose from 'mongoose';
+import userRouter from './routers/user';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+
+mongoose.set('strictQuery', false);
+
+const MONGO_DB_URI = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' ?
+  process.env.DATABASE_REMOTE_TEST : process.env.DATABASE_REMOTE;
+
+console.log(`Connecting to MongoDB at ${MONGO_DB_URI}`);
+
+if (!MONGO_DB_URI) {
+  throw new Error('No database uri provided');
+}
+
+mongoose.connect(MONGO_DB_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error: Error) => {
+    console.log(`Error in connection to MongoDB: ${error.message}`);
+  });
+
 
 const app: Express = express();
 const secret = process.env.SECRET;
@@ -21,7 +42,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// app.use(router);
+app.use('/api/user', userRouter);
 
 const PORT = 3000;
 
