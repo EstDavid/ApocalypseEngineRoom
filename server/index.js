@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(session({secret: process.env.SECRET}));
 
 app.use(cors({
-  credentials: true, 
+  credentials: true,
   origin: 'http://localhost:5173',
   exposedHeaders: ['set-cookie']
 }))

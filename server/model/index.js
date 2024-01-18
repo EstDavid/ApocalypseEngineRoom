@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const path  = require("path")
 const fs = require('fs')
-require('dotenv').config()
+// require('dotenv').config()
 
 const db = {}
 
@@ -11,7 +11,7 @@ function startServer() {
   main().catch(err => console.log(err));
 
   async function main() {
-      await mongoose.connect(process.env.MOMGO_CONNECTION);
+      await mongoose.connect(process.env.DATABASE_URL);
   }
 }
 
@@ -21,7 +21,7 @@ for(let file of files) {
   if(file !== 'index.js') {
     const model = require(path.join(__dirname, file))(mongoose)
     db[model.name] = model.model
-  } 
+  }
 }
 
 module.exports = db
