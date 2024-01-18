@@ -1,0 +1,275 @@
+.CharSheet {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-bottom: 50px;
+}
+
+.CharSheetMain{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+a {
+    color: #D75757;
+    overflow-wrap:break-word;
+}
+
+button {
+    background-color: #D75757;
+    border: 0px;
+    border-radius: 2px;
+}
+  
+.col {
+  flex: 1;
+  padding: 15px;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CreditDiv{
+    width: 100%;
+}
+
+#moveCol {
+    flex: 3;
+}
+
+#trackerCol {
+    flex: 2;
+}
+
+#descCol {
+    max-width: 30%;
+}
+
+h1{
+  text-align:center;
+  color: white;
+}
+
+h2 {
+  text-align:center;
+  color: #E5383B;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+span {
+    color: #E5383B;
+    text-decoration: underline;
+}
+
+textarea {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    background-color: rgb(224, 224, 224);
+    resize: vertical;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.StatList {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 80%;
+    gap: 20px;
+}
+
+.StatView {
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    font-size: 30px;
+    gap: 15px;
+    align-items: center;
+}
+
+.StatView input {
+    background-color: #D75757;
+    border: black 2px;
+    border-radius: 5px;
+    font-size: 30px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+}
+
+.statTitle {
+    flex-grow: 2;
+    font-size: 25px;
+}
+
+.RollButtons {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    width: 60px;
+    justify-self: flex-end;
+}
+.mainRoll {   
+    height: 25px;
+    background-color: #E5383B;
+}
+
+.lowerBtnDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.lowerBtnDiv button {
+    height: 20px;
+    width: 27px;
+}
+
+.MoveDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.moveAvailable {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 0.5em;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.moveAvailable:checked {
+    background-color: #E5383B;
+}
+
+.check {
+    min-width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    background-color: transparent;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.check:checked{
+    background-color: #E5383B;
+}
+
+.MoveDiv p {
+    flex: 2;
+}
+
+.moveAction {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    width: 20px;
+    height: 20px;
+}
+
+textarea {
+    font-size: 20px;
+}
+
+.Tracker {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Horizontal {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.Vertical {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+.verticalItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Text {
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+p {
+    margin: 10px;
+}
+
+.rollsView {
+    padding-top: 10px;
+    z-index: 2;
+    position:fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.RollResult {
+    font-size: 25px;
+    height: 50px;
+    background-color: black;
+    box-shadow: 0px 0px 10px  white;
+    border-radius: 25px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    padding-right: 5px;
+    margin-right: 15px;
+    margin-top: 20px;
+}
+
+.rollCloseBtn {
+    background-color: white;
+    color: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.Die {
+    color: white;
+    font-size: 30px;
+}
+
+.Highlight {
+    box-shadow: 0px 0px 10px  #fff2aa;
+    border-radius: 5px;
+}
+
+.Dismiss {
+    color: rgb(163, 163, 163);
+}

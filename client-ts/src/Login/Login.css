@@ -1,0 +1,64 @@
+.Login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.CredDiv{
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+}
+
+.LogoDiv {
+    width: 250px;
+    height: 250px;
+    border-radius: 125px;
+    background-size: contain;
+}
+
+
+.fieldDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%
+}
+
+.LoginInput {
+    width: 100%;
+    font-size: 30px;
+    box-sizing: border-box;
+    height: fit-content;
+}
+
+.WarningText {
+    color: #E5383B;
+    padding: 20px;
+    text-align: center;
+}
+
+.loginBtns {
+    margin-top: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.loginBtns button {
+    font-size: 30px;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    width: 200px;
+}
+
+@media only screen and (max-width: 900px) {
+    .CredDiv {
+      width: 100%;
+    }
+}
