@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import BtnGroup from './BtnGroup';
 
 function StatView({stat, handler, rollDice}) {
