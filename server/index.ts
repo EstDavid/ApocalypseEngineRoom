@@ -9,8 +9,6 @@ const app: Express = express();
 const secret = process.env.SECRET;
 app.use(cookieParser());
 
-console.log('secretsss', secret);
-
 if (!secret) {
   throw new Error('No secret provided');
 }
