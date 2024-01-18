@@ -1,9 +1,9 @@
 const express = require("express");
+require('dotenv').config()
 const router = require("./router")
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-require('dotenv').config()
 
 const app = express();
 app.use(cookieParser());
