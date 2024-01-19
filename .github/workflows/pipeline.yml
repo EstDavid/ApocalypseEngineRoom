@@ -1,0 +1,25 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+      - name: Install dependencies server
+        run: cd server && npm install
+      # - name: Install dependencies client
+      #   run: cd client && npm install
+      - name: Check style server
+        run: cd server && npm run lint:fix
+      # - name: Build
+      #   run: npm run build
+      # - name: Test
+      #   run: npm test

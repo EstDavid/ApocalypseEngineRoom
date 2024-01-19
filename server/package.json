@@ -6,7 +6,8 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "dev:tsc": "cross-env NODE_ENV=development nodemon dist/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "lint": "npx eslint . --fix"
+    "lint": "npx eslint './**/*.{js,ts,}'",
+    "lint:fix": "npx eslint './**/*.{js,ts,}' --fix"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
