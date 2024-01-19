@@ -14,26 +14,27 @@ import roll_5 from '../assets/roll_5.mp3';
 import { AxiosInstance, AxiosResponse } from 'axios';
 import {
   IUpdateTextArea, Stat, IUpdateStat, ITracker,
-  IUpdateTextTracker } from '../types';
+  IUpdateTextTracker, IUpdateCheckboxTracker, ITrackerValueObj,
+} from '../types';
 
-function CharSheet({client}: {client: AxiosInstance}) {
+function CharSheet({ client }: { client: AxiosInstance }) {
   const [charInfo, setCharInfo] = useState({});
   const [moves, setMoves] = useState<Move[]>([]);
-  const [trackers, setTrackers] = useState<ITracker[]>([]);
+  const [trackers, setTrackers] = useState<ITracker<ITrackerValueObj[] | string>[]>([]);
   const [stats, setStats] = useState<Stat[]>([]);
   const [queryParameters] = useSearchParams();
   const [rolls, setRolls] = useState([]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (queryParameters.get('CharID')) {
-      client.get(`/character/${queryParameters.get('CharID')}`, {withCredentials: true}).then((response:AxiosResponse) => {
+      client.get(`/character/${queryParameters.get('CharID')}`, { withCredentials: true }).then((response: AxiosResponse) => {
         const partialCharInfo = response.data;
 
-        const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true});
-        const moves_full = client.get(`/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true});
-        const trackers_full = client.get(`/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true});
+        const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
+        const moves_full = client.get(`/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
+        const trackers_full = client.get(`/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
 
-        Promise.all([playbook_full, moves_full, trackers_full]).then(function([playbook_full, moves_full, trackers_full]) {
+        Promise.all([playbook_full, moves_full, trackers_full]).then(function ([playbook_full, moves_full, trackers_full]) {
           const [pb, mvs, trks] = [playbook_full.data, moves_full.data, trackers_full.data];
           setCharInfo({
             'name': partialCharInfo.name,
@@ -43,24 +44,24 @@ function CharSheet({client}: {client: AxiosInstance}) {
             'playbook': pb.name,
             'charDescription': partialCharInfo.charDescription,
             'playingThis': pb.playingThis,
-            'playbookDescription' : pb.description,
+            'playbookDescription': pb.description,
             'movesText': pb.movesText,
             'notes': partialCharInfo.notes
           });
           setStats(partialCharInfo.stats);
-          setMoves(mvs.map((m:Move) => {return {...m, isAvailable: partialCharInfo.moves.find((charM:Move) => charM._id == m._id).isAvailable};}));
-          setTrackers(trks.map(t => {return {...t, value: partialCharInfo.trackers.find(charT => charT._id == t._id).value};}));
+          setMoves(mvs.map((m: Move) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: Move) => charM._id == m._id).isAvailable }; }));
+          setTrackers(trks.map(t => { return { ...t, value: partialCharInfo.trackers.find(charT => charT._id == t._id).value }; }));
         });
       });
     }
   }, [queryParameters]);
 
-  const updateTextArea:IUpdateTextArea = (newText, fieldName) => {
+  const updateTextArea: IUpdateTextArea = (newText, fieldName) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': fieldName,
       'newVal': newText
-    }, {withCredentials: true})
-      .then(function (response:AxiosResponse) {
+    }, { withCredentials: true })
+      .then(function (response: AxiosResponse) {
         setCharInfo({
           ...charInfo,
           fieldName: response.data[fieldName]
@@ -71,15 +72,15 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const updateStat:IUpdateStat = (statName, newVal) => {
+  const updateStat: IUpdateStat = (statName, newVal) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'stats',
       'newVal': stats.map((s) => {
         if (s.name == statName) s.value = newVal;
         return s;
-      }, {withCredentials: true})
-    } , {withCredentials: true})
-      .then(function (response:AxiosResponse) {
+      }, { withCredentials: true })
+    }, { withCredentials: true })
+      .then(function (response: AxiosResponse) {
         setStats(response.data.stats);
       })
       .catch(function (error) {
@@ -87,60 +88,62 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const updateTextTracker:IUpdateTextTracker = (trackerName, newText) => {
+  const updateTextTracker: IUpdateTextTracker = (trackerName, newText) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'trackers',
       'newVal': trackers.map((t) => {
-        if (t.name == trackerName) {t.value = newText;} //** */
-        return {_id: t._id, value: t.value};
+        if (t.name == trackerName) { t.value = newText; } //** */
+        return { _id: t._id, value: t.value };
       })
-    }, {withCredentials: true})
-      .then(function (response:AxiosResponse) {
-        setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find((charT:ITracker) => charT._id == t._id).value};}));
+    }, { withCredentials: true })
+      .then(function (response: AxiosResponse) {
+        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find((charT: ITracker) => charT._id == t._id).value }; }));
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
-  const updateCheckboxTracker = (trackerName, changedIndex) => {
+  const updateCheckboxTracker: IUpdateCheckboxTracker = (trackerName, changedIndex) => {
 
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'trackers',
-      'newVal':trackers.map((t) => {
+      'newVal': trackers.map((t) => {
         if (t.name == trackerName) {
-          t.value = t.value.map(item => {
-            if (item.index == changedIndex) {
-              item.value = !item.value;
-            }
-            return item;
-          });
+          if (Array.isArray(t.value)) {
+            t.value = t.value.map((item) => {
+              if (item.index == changedIndex) {
+                item.value = !item.value;
+              }
+              return item;
+            });
+          }
         }
         return t;
       })
-    }, {withCredentials: true})
-      .then(function (response:AxiosResponse) {
-        setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value};}));
+    }, { withCredentials: true })
+      .then(function (response: AxiosResponse) {
+        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find(charT => charT._id == t._id).value }; }));
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
-  const trackerHandlers = {updateTextTracker, updateCheckboxTracker};
+  const trackerHandlers = { updateTextTracker, updateCheckboxTracker };
 
-  const toggleMoveAvailable = (toggledMove:Move) => {
+  const toggleMoveAvailable = (toggledMove: Move) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'moves',
       'newVal': moves.map(m => {
         if (m.name == toggledMove.name) m.isAvailable = !m.isAvailable;
         return m;
       })
-    }, {withCredentials: true})
-      .then(function (response:AxiosResponse) {
+    }, { withCredentials: true })
+      .then(function (response: AxiosResponse) {
         setMoves(moves.map(m => {
-          const newAvailable= response.data.moves.find((charM:Move) => charM._id == m._id).isAvailable; //!!FIXME - find()=undefined??
-          return {...m, isAvailable: newAvailable, isModAdded: newAvailable && m.isModAdded};
+          const newAvailable = response.data.moves.find((charM: Move) => charM._id == m._id).isAvailable; //!!FIXME - find()=undefined??
+          return { ...m, isAvailable: newAvailable, isModAdded: newAvailable && m.isModAdded };
         }));
       })
       .catch(function (error) {
@@ -148,18 +151,18 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const toggleMoveAddMod = (toggledMove:Move) => {
+  const toggleMoveAddMod = (toggledMove: Move) => {
     setMoves(moves.map(m => {
-      if (m.name == toggledMove.name){ m.isModAdded = !m.isModAdded;}
+      if (m.name == toggledMove.name) { m.isModAdded = !m.isModAdded; }
       return m;
     }));
   };
 
   const modToText = (mod) => {
-    if (typeof(mod) == 'number') return `${mod < 0 ? ' ': ' + '}${mod}`;
+    if (typeof (mod) == 'number') return `${mod < 0 ? ' ' : ' + '}${mod}`;
     let modText = '';
     stats.forEach((stat) => {
-      if(mod == stat.name) modText = `${stat.value < 0 ? ' ': ' + '}${stat.value}`;
+      if (mod == stat.name) modText = `${stat.value < 0 ? ' ' : ' + '}${stat.value}`;
     });
     return modText;
   };
@@ -174,8 +177,8 @@ function CharSheet({client}: {client: AxiosInstance}) {
 
     roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod)).join('');
     setRolls([...rolls, new DiceRoll(roll)]);
-    setMoves(moves.map(m => {m.isModAdded = false; return m;}));
-    rollSounds[Math.floor(Math.random()*rollSounds.length)].play();
+    setMoves(moves.map(m => { m.isModAdded = false; return m; }));
+    rollSounds[Math.floor(Math.random() * rollSounds.length)].play();
   };
 
   const removeRoll = (rollIndex) => {
@@ -199,17 +202,17 @@ function CharSheet({client}: {client: AxiosInstance}) {
             id="CharDesc"
             rows={3}
             defaultValue={charInfo.charDescription}
-            onChange={e => {updateTextArea(e.target.value, 'charDescription');}}
+            onChange={e => { updateTextArea(e.target.value, 'charDescription'); }}
           />
           <h2>Stats:</h2>
           <div className='StatList'>
-            {stats? stats.map(s => <StatView key={s.name} stat={s} handler={updateStat} rollDice={rollDice}></StatView>): ''}
+            {stats ? stats.map(s => <StatView key={s.name} stat={s} handler={updateStat} rollDice={rollDice}></StatView>) : ''}
           </div>
-          {charInfo.playbookDescription ? charInfo.playbookDescription.map((par, i) => {return <p key={i}>{par}</p>;}): ''}
+          {charInfo.playbookDescription ? charInfo.playbookDescription.map((par, i) => { return <p key={i}>{par}</p>; }) : ''}
           {charInfo.playingThis && charInfo.playingThis.length ? <div>
             <h2>Playing {charInfo.playbook}</h2>
-            {charInfo.playingThis.map((par, i) => {return <p key={i}>{par}</p>;})}
-          </div> :''}
+            {charInfo.playingThis.map((par, i) => { return <p key={i}>{par}</p>; })}
+          </div> : ''}
           <div className='CreditDiv'>
             <p>{charInfo.systemName} was made by {charInfo.madeBy}, and is available at: <a href={charInfo.available_at}>{charInfo.available_at}</a></p>
           </div>
@@ -219,7 +222,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
             id="Notes"
             rows={10}
             defaultValue={charInfo.notes}
-            onChange={e => {updateTextArea(e.target.value, 'notes');}}
+            onChange={e => { updateTextArea(e.target.value, 'notes'); }}
           />
         </div>
         <div className='col' id='moveCol'>
@@ -227,16 +230,16 @@ function CharSheet({client}: {client: AxiosInstance}) {
           {moves ?
             <>
               <h2>Basic Moves:</h2>
-              {moves.filter((m) => m.playbook == 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={()=>{}} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
+              {moves.filter((m) => m.playbook == 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={() => { }} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
 
               <h2>{charInfo.playbook} Moves:</h2>
-              {charInfo.movesText? <p>{charInfo.movesText}</p> : ''}
+              {charInfo.movesText ? <p>{charInfo.movesText}</p> : ''}
               {moves.filter((m) => m.playbook != 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={toggleMoveAvailable} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
             </>
             : ''}
         </div>
         <div className='col' id='trackerCol'>
-          {trackers? trackers.map((t) => <Tracker tracker={t} key={t.name} trackerHandlers={trackerHandlers}/>) : ''}
+          {trackers ? trackers.map((t) => <Tracker tracker={t} key={t.name} trackerHandlers={trackerHandlers} />) : ''}
         </div>
       </div>
     </div>

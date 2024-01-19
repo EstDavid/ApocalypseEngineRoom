@@ -1,3 +1,5 @@
+import { ITextTracker, ITracker, ITrackerHandlers, IUpdateTextTracker, ITrackerValueObj} from "../types";
+
 function HorizontalTracker(tracker, handler) {
   return (
     <div className='Horizontal'>
@@ -18,7 +20,7 @@ function VerticalTracker(tracker, handler) {
   );
 }
 
-function TextTracker(tracker, handler) {
+function TextTracker(tracker:ITracker<string>, handler:IUpdateTextTracker) {
   return (
     <div className='Text'>
       <textarea name={tracker.name} rows={3} defaultValue={tracker.value} onChange={e => handler(tracker.name, e.target.value)}></textarea>
@@ -26,13 +28,13 @@ function TextTracker(tracker, handler) {
   );
 }
 
-function contentSetter(tracker, trackerHandlers) {
+function contentSetter(tracker:ITracker<ITrackerValueObj[] | string>, trackerHandlers:ITrackerHandlers) {
   if (tracker.type == 'horizontal') return HorizontalTracker(tracker, trackerHandlers.updateCheckboxTracker);
   if (tracker.type == 'vertical') return VerticalTracker(tracker, trackerHandlers.updateCheckboxTracker);
-  if (tracker.type == 'text') return TextTracker(tracker, trackerHandlers.updateTextTracker);
+  if (tracker.type == 'text') return TextTracker(tracker<ITracker<string>>, trackerHandlers.updateTextTracker);
 }
 
-function Tracker({tracker, trackerHandlers}) {
+function Tracker({tracker, trackerHandlers}:{tracker:ITracker<ITrackerValueObj[] | string>, trackerHandlers:ITrackerHandlers}) {
   return (
     <div className='Tracker'>
       <h2>{tracker.name}</h2>

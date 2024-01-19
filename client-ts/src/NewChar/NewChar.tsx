@@ -17,6 +17,7 @@ function NewChar({userID, client}) {
       const sysList = [...new Set(response.data.map(pb => pb.systemName))].map((s) => {return { value: s, label: s };});
       setSystemList(sysList);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitNewChar = () => {

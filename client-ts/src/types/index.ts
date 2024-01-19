@@ -70,20 +70,23 @@ export interface Playbook {
     ]
   ]
 }
-export interface ITracker {
+
+export interface ITrackerValueObj {
+        index: number,
+        value: string | boolean,
+        text?: string,
+      }
+
+
+
+export interface ITracker<T> {
   _id: string,
   name: string,
   system: string,
   playbook: string,
   description: string,
-  type: string,
-  value: [
-    {
-      index: number,
-      value: string,
-      text?: string,
-    }
-  ] | string | ''
+  type: 'horizontal' | 'vertical' | 'text',
+  value: T
 }
 
 // Function interfaces
@@ -98,3 +101,11 @@ export type ISignup = (username: string, password: string) => void
 export type IUpdateTextArea = (newText: string, fieldName: string) => void;
 export type IUpdateStat = (statName:string, newVal:number) => void;
 export type IUpdateTextTracker = (trackerName:string, newText:string) => void;
+export type IUpdateCheckboxTracker = (trackerName:string, changedIndex:number) => void;
+export type ITextTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateTextTracker) => void;
+export type ILineTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateCheckboxTracker) => void;
+
+
+export interface ITrackerHandlers {
+  updateCheckboxTracker:IUpdateCheckboxTracker,
+  updateTextTracker:IUpdateTextTracker}
