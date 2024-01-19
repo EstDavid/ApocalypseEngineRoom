@@ -1,9 +1,7 @@
-import express from 'express';
+import { route } from '../types';
 import * as playbooksController from '../controller/playbooks';
 
-const router = express.Router();
+route('get', '/:system/:playbook', playbooksController.getPlaybook);
+route('get', '/', playbooksController.getPlaybooks);
 
-router.get('/:system/:playbook', playbooksController.getPlaybook);
-router.get('/', playbooksController.getPlaybooks);
-
-export default router;
+export default route;

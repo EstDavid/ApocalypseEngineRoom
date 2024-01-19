@@ -6,8 +6,8 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "dev:tsc": "cross-env NODE_ENV=development nodemon dist/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "lint": "npx eslint './**/*.{js,ts,}'",
-    "lint:fix": "npx eslint './**/*.{js,ts,}' --fix"
+    "lint": "npx eslint './**/*.{ts,}'",
+    "lint:fix": "npx eslint './**/*.{ts,}' --fix"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
@@ -28,6 +28,8 @@
     "@types/express-session": "^1.17.10",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",

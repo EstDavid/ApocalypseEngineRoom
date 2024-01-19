@@ -1,12 +1,10 @@
-import express from 'express';
+import { route } from '../types';
 import * as charactersController from '../controller/characters';
 
-const router = express.Router();
+route('get', '/', charactersController.getChars);
+route('post', '/', charactersController.addChar);
+route('get', '/:id', charactersController.getCharById);
+route('post', '/:id', charactersController.updateChar);
+route('delete', '/:id', charactersController.deleteChar);
 
-router.get('/', charactersController.getChars);
-router.post('/', charactersController.addChar);
-router.get('/:id', charactersController.getCharById);
-router.post('/:id', charactersController.updateChar);
-router.delete('/:id', charactersController.deleteChar);
-
-export default router;
+export default route;

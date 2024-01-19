@@ -1,13 +1,18 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import Character from '../model/character';
 import Tracker from '../model/tracker';
 import Move from '../model/move';
+import { Character as CharacterType, CookieOptions, UpdateCharacterModel, CustomRequest } from '../types';
 
-export const getChars = async (req: Request, res: Response) => {
+export const getChars = async (req: CustomRequest<CookieOptions, unknown>, res: Response): Promise<void> => {
   try {
-    const userID = req.cookies.userID;
+    const { userID } = req.cookies;
+
     if (!userID) { throw ('Bad Credendials'); }
-    res.send(await Character.find({ owner: userID }).select({ name: 1, playbook: 1, system: 1 }));
+
+    const characters = await Character.find({ owner: userID }).select({ name: 1, playbook: 1, system: 1 });
+
+    res.send(characters);
     res.status(201);
   } catch (err) {
     console.log(err);
@@ -15,45 +20,33 @@ export const getChars = async (req: Request, res: Response) => {
   }
 };
 
-export const addChar = async (req: Request, res: Response) => {
+export const addChar = async (req: CustomRequest<CookieOptions, CharacterType>, res: Response) => {
   try {
-    const userID = req.cookies.userID;
+    const { cookies }: { cookies: CookieOptions; } = req;
+    const userID: string | undefined = cookies.userID;
     if (!userID) { throw ('Bad Credendials'); }
 
-    const { system, playbook, name, stats } = req.body;
+    const { system, playbook, name, stats }: CharacterType = req.body;
     if ([system, playbook, name].some((field => typeof (field) != 'string'))) {
       throw ('Bad Input');
     }
-    const trackers_response = Tracker.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ value: 1 });
-    const moves_response = Move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
+    const trackers_response = await Tracker.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ value: 1 });
+    const moves_response = await Move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
 
-    Promise.all([trackers_response, moves_response]).then(function ([trackers, moves]) {
-      const newChar = {
-        owner: userID,
-        system,
-        playbook,
-        name,
-        moves,
-        trackers,
-        stats,
-        "charDescription": "",
-        "notes": ""
-      };
-      Character.create(newChar).then((createdChar) => res.send(createdChar._id));
+    const newChar = new Character({
+      owner: userID,
+      system,
+      playbook,
+      name,
+      moves: trackers_response,
+      trackers: moves_response,
+      stats,
+      "charDescription": "",
+      "notes": ""
     });
-  } catch (err) {
-    console.log(err);
-    res.status(400);
-  }
-};
 
-export const getCharById = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const userID = req.cookies.userID;
-    if (!userID) { throw ('Bad Credendials'); }
-
-    res.send(await Character.findOne({ _id: id, owner: userID }));
+    await newChar.save();
+    res.send(newChar._id);
     res.status(201);
   } catch (err) {
     console.log(err);
@@ -61,17 +54,39 @@ export const getCharById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateChar = async (req: Request, res: Response) => {
+export const getCharById = async (req: CustomRequest<CookieOptions, unknown>, res: Response) => {
   try {
     const id = req.params.id;
+    const { userID } = req.cookies;
 
-    const userID = req.cookies.userID;
+    if (!userID) { throw ('Bad Credendials'); }
+
+    const character = await Character.findOne({ _id: id, owner: userID });
+    res.send(character);
+    res.status(201);
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+  }
+};
+
+export const updateChar = async (req: CustomRequest<CookieOptions, UpdateCharacterModel>, res: Response) => {
+  try {
+    const id = req.params.id;
+    const { userID } = req.cookies;
+
     if (!userID) { throw ('Bad Credendials'); }
 
     const update: { [f: string]: string; } = {};
-    update[req.body.updatedField] = req.body.newVal;
+    const { newVal } = req.body;
+    //     if(!newVal) {
+    //       throw new Error('Update value not provided');
+    // }
+    update[req.body.updatedField] = newVal;
 
-    res.send(await Character.findOneAndUpdate({ _id: id, owner: userID }, update, { new: true }));
+    const updatedCharacter = await Character.findOneAndUpdate({ _id: id, owner: userID }, update, { new: true });
+
+    res.send(updatedCharacter);
     res.status(201);
   } catch (err) {
     console.log(err);
@@ -79,15 +94,16 @@ export const updateChar = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteChar = async (req: Request, res: Response) => {
+export const deleteChar = async (req: CustomRequest<CookieOptions, unknown>, res: Response) => {
   try {
     const id = req.params.id;
-    const userID = req.cookies.userID;
+    const { userID } = req.cookies;
+
     if (!userID) { throw ('Bad Credendials'); }
 
-    Character.findOneAndDelete({ _id: id, owner: userID }).then(async () => {
-      res.send('deleted');
-    });
+    await Character.findOneAndDelete({ _id: id, owner: userID });
+
+    res.send('deleted');
     res.status(201);
   } catch (err) {
     console.log(err);

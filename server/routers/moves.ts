@@ -1,8 +1,6 @@
-import express from 'express';
+import { route } from '../types';
 import * as movesController from '../controller/moves';
 
-const router = express.Router();
+route('get', '/:system/:playbook', movesController.getMoves);
 
-router.get('/:system/:playbook', movesController.getMoves);
-
-export default router;
+export default route;
