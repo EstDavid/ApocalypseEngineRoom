@@ -1,10 +1,8 @@
-import express from 'express';
+import { route, routeWithoutPromise } from '../types';
 import * as usersController from '../controller/users';
 
-const router = express.Router();
+route('post', '/login', usersController.getUser);
+route('post', '/signup', usersController.addUser);
+routeWithoutPromise('post', '/logout', usersController.logout);
 
-router.post('/login', usersController.getUser);
-router.post('/signup', usersController.addUser);
-router.post('/logout', usersController.logout);
-
-export default router;
+export default route;
