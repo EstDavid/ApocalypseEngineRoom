@@ -5,3 +5,8 @@ Content-Type: application/json
   "username": "John",
   "password": "password"
 }
+
+
+
+###
+GET http://localhost:3000/api/playbooks

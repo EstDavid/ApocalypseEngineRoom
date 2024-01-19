@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import Character from '../model/character';
+import Tracker from '../model/tracker';
+import Move from '../model/move';
 
 export const getChars = async (req: Request, res: Response) => {
   try {
@@ -22,8 +24,8 @@ export const addChar = async (req: Request, res: Response) => {
     if ([system, playbook, name].some((field => typeof (field) != 'string'))) {
       throw ('Bad Input');
     }
-    const trackers_response = db.tracker.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ value: 1 });
-    const moves_response = db.move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
+    const trackers_response = Tracker.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ value: 1 });
+    const moves_response = Move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
 
     Promise.all([trackers_response, moves_response]).then(function ([trackers, moves]) {
       const newChar = {
@@ -66,7 +68,7 @@ export const updateChar = async (req: Request, res: Response) => {
     const userID = req.cookies.userID;
     if (!userID) { throw ('Bad Credendials'); }
 
-    const update = {};
+    const update: { [f: string]: string; } = {};
     update[req.body.updatedField] = req.body.newVal;
 
     res.send(await Character.findOneAndUpdate({ _id: id, owner: userID }, update, { new: true }));
