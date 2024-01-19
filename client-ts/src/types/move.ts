@@ -6,7 +6,8 @@ interface Move {
   description:string,
   isAvailable:boolean,
   isRoll: boolean,
-  mod?: string | number
+  mod?: string | number,
+  isModAdded?:boolean,
 }
 
 export default Move;

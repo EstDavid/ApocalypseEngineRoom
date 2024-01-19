@@ -21,7 +21,7 @@ function VerticalTracker(tracker, handler) {
 function TextTracker(tracker, handler) {
   return (
     <div className='Text'>
-      <textarea name={tracker.name} rows="3" defaultValue={tracker.value} onChange={e => handler(tracker.name, e.target.value)}></textarea>
+      <textarea name={tracker.name} rows={3} defaultValue={tracker.value} onChange={e => handler(tracker.name, e.target.value)}></textarea>
     </div>
   );
 }

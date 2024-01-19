@@ -13,7 +13,7 @@ import MyChars from './MyChars/MyChars';
 import NewChar from './NewChar/NewChar';
 import Login from './Login/Login';
 import './App.css';
-import { LoginFunc, SignupFunc } from './types';
+import { ILogin, ISignup } from './types';
 
 
 const client = axios.create({
@@ -29,7 +29,7 @@ function App() {
     if (cookieID) setUserID(cookieID.slice(3, -1));
   }, []);
 
-  const login : LoginFunc = (username, password) => {
+  const login : ILogin = (username, password) => {
     client.post('login', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data);
       else setUserID(response.data);
@@ -38,7 +38,7 @@ function App() {
     });
   };
 
-  const signup : SignupFunc = (username, password) => {
+  const signup : ISignup = (username, password) => {
     client.post('signup', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details') setLoginIssue(response.data);
       else setUserID(response.data);

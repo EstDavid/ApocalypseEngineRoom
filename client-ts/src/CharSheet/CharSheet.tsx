@@ -12,14 +12,15 @@ import roll_3 from '../assets/roll_3.mp3';
 import roll_4 from '../assets/roll_4.mp3';
 import roll_5 from '../assets/roll_5.mp3';
 import { AxiosInstance, AxiosResponse } from 'axios';
-
-
+import {
+  IUpdateTextArea, Stat, IUpdateStat, ITracker,
+  IUpdateTextTracker } from '../types';
 
 function CharSheet({client}: {client: AxiosInstance}) {
   const [charInfo, setCharInfo] = useState({});
-  const [moves, setMoves] = useState([]);
-  const [trackers, setTrackers] = useState([]);
-  const [stats, setStats] = useState([]);
+  const [moves, setMoves] = useState<Move[]>([]);
+  const [trackers, setTrackers] = useState<ITracker[]>([]);
+  const [stats, setStats] = useState<Stat[]>([]);
   const [queryParameters] = useSearchParams();
   const [rolls, setRolls] = useState([]);
 
@@ -47,14 +48,14 @@ function CharSheet({client}: {client: AxiosInstance}) {
             'notes': partialCharInfo.notes
           });
           setStats(partialCharInfo.stats);
-          setMoves(mvs.map((m) => {return {...m, isAvailable: partialCharInfo.moves.find(charM => charM._id == m._id).isAvailable};}));
+          setMoves(mvs.map((m:Move) => {return {...m, isAvailable: partialCharInfo.moves.find((charM:Move) => charM._id == m._id).isAvailable};}));
           setTrackers(trks.map(t => {return {...t, value: partialCharInfo.trackers.find(charT => charT._id == t._id).value};}));
         });
       });
     }
   }, [queryParameters]);
 
-  const updateTextArea = (newText, fieldName) => {
+  const updateTextArea:IUpdateTextArea = (newText, fieldName) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': fieldName,
       'newVal': newText
@@ -70,7 +71,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const updateStat = (statName, newVal) => {
+  const updateStat:IUpdateStat = (statName, newVal) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'stats',
       'newVal': stats.map((s) => {
@@ -86,16 +87,16 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const updateTextTracker = (trackerName, newText) => {
+  const updateTextTracker:IUpdateTextTracker = (trackerName, newText) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'trackers',
       'newVal': trackers.map((t) => {
-        if (t.name == trackerName) {t.value = newText;}
+        if (t.name == trackerName) {t.value = newText;} //** */
         return {_id: t._id, value: t.value};
       })
     }, {withCredentials: true})
       .then(function (response:AxiosResponse) {
-        setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value};}));
+        setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find((charT:ITracker) => charT._id == t._id).value};}));
       })
       .catch(function (error) {
         console.log(error);
@@ -128,7 +129,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
 
   const trackerHandlers = {updateTextTracker, updateCheckboxTracker};
 
-  const toggleMoveAvailable = (toggledMove) => {
+  const toggleMoveAvailable = (toggledMove:Move) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'moves',
       'newVal': moves.map(m => {
@@ -138,7 +139,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
     }, {withCredentials: true})
       .then(function (response:AxiosResponse) {
         setMoves(moves.map(m => {
-          const newAvailable = response.data.moves.find(charM => charM._id == m._id).isAvailable;
+          const newAvailable= response.data.moves.find((charM:Move) => charM._id == m._id).isAvailable; //!!FIXME - find()=undefined??
           return {...m, isAvailable: newAvailable, isModAdded: newAvailable && m.isModAdded};
         }));
       })
@@ -147,7 +148,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
       });
   };
 
-  const toggleMoveAddMod = (toggledMove) => {
+  const toggleMoveAddMod = (toggledMove:Move) => {
     setMoves(moves.map(m => {
       if (m.name == toggledMove.name){ m.isModAdded = !m.isModAdded;}
       return m;
@@ -156,7 +157,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
 
   const modToText = (mod) => {
     if (typeof(mod) == 'number') return `${mod < 0 ? ' ': ' + '}${mod}`;
-    var modText = '';
+    let modText = '';
     stats.forEach((stat) => {
       if(mod == stat.name) modText = `${stat.value < 0 ? ' ': ' + '}${stat.value}`;
     });
@@ -166,7 +167,7 @@ function CharSheet({client}: {client: AxiosInstance}) {
   const rollSounds = [roll_1, roll_2, roll_3, roll_4, roll_5].map(r => new Audio(r));
 
   const rollDice = (baseRoll, rollMod) => {
-    var roll = baseRoll;
+    let roll = baseRoll;
     if (rollMod) {
       roll += modToText(rollMod);
     }
