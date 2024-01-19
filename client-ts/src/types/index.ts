@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export interface Move {
   _id: string,
   name: string,
@@ -73,7 +75,7 @@ export interface Playbook {
 
 export interface ITrackerValueObj {
         index: number,
-        value: string | boolean,
+        value: boolean,
         text?: string,
       }
 
@@ -102,7 +104,7 @@ export type IUpdateTextArea = (newText: string, fieldName: string) => void;
 export type IUpdateStat = (statName:string, newVal:number) => void;
 export type IUpdateTextTracker = (trackerName:string, newText:string) => void;
 export type IUpdateCheckboxTracker = (trackerName:string, changedIndex:number) => void;
-export type ITextTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateTextTracker) => void;
+export type ITextTracker = (tracker:ITracker<string>, handler:IUpdateTextTracker) =>  ReactElement;
 export type ILineTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateCheckboxTracker) => void;
 
 
