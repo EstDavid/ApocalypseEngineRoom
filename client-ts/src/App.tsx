@@ -13,6 +13,7 @@ import MyChars from './MyChars/MyChars';
 import NewChar from './NewChar/NewChar';
 import Login from './Login/Login';
 import './App.css';
+import { LoginFunc, SignupFunc } from './types';
 
 
 const client = axios.create({
@@ -28,7 +29,7 @@ function App() {
     if (cookieID) setUserID(cookieID.slice(3, -1));
   }, []);
 
-  const login = (username:string, password:string) => {
+  const login : LoginFunc = (username, password) => {
     client.post('login', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data);
       else setUserID(response.data);
@@ -37,7 +38,7 @@ function App() {
     });
   };
 
-  const signup = (username:string, password:string) => {
+  const signup : SignupFunc = (username, password) => {
     client.post('signup', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details') setLoginIssue(response.data);
       else setUserID(response.data);
@@ -72,7 +73,9 @@ function App() {
             </Link>
           </div>: ''}
         <Routes>
-          <Route path="/" element={userID.length ? <MyChars userID={userID} client={client}/> : <Login login={login} signup={signup} client={client} loginIssue={loginIssue} />} />
+          <Route path="/" element={userID.length
+            ? <MyChars userID={userID} client={client}/>
+            : <Login login={login} signup={signup} loginIssue={loginIssue} />} />
           <Route path="/NewCharacter" element={<NewChar userID={userID} client={client}/>} />
           <Route path="/CharacterSheet" element={<CharSheet client={client}/>} />
         </Routes>

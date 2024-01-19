@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './Login.css';
 import logo from '../assets/logo.png';
+import { LoginIssue, LoginFunc, SignupFunc } from '../types';
 
-function Login({login, signup, loginIssue}) {
+function Login({login, signup, loginIssue}:{login:LoginFunc, signup:SignupFunc,loginIssue:LoginIssue}) {
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
   return (

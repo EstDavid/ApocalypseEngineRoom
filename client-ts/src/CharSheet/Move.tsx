@@ -1,6 +1,7 @@
 import BtnGroup from './BtnGroup';
+import {Move} from '../types';
 
-function MoveActionMaker(move, toggleMoveAddMod, rollDice) {
+function MoveActionMaker(move: Move, toggleMoveAddMod, rollDice) {
   if (move.isAvailable){
     if (move.isRoll) return <BtnGroup rollDice={rollDice} mod={move.mod}></BtnGroup>;
     if (move.mod) return <input className='check' name={move.name + ' Mod'} type='checkbox' checked={move.isModAdded} onChange={e => toggleMoveAddMod(move)}/>;
@@ -8,7 +9,7 @@ function MoveActionMaker(move, toggleMoveAddMod, rollDice) {
   return <></>;
 }
 
-function Move({move, toggleMoveAvailable, toggleMoveAddMod, rollDice}) {
+function Move({move, toggleMoveAvailable, toggleMoveAddMod, rollDice}:{move:Move}) {
   return (
     <div className='MoveDiv'>
       <input className='moveAvailable' name={move.name} type="checkbox" checked={move.isAvailable} onChange={e => toggleMoveAvailable(move)}/>

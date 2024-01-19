@@ -14,7 +14,8 @@ import roll_5 from '../assets/roll_5.mp3';
 import { AxiosInstance, AxiosResponse } from 'axios';
 
 
-function CharSheet({client}: {client: AxiosInstance}) { //!! this is an AxiosInstance but am having problems defining it
+
+function CharSheet({client}: {client: AxiosInstance}) {
   const [charInfo, setCharInfo] = useState({});
   const [moves, setMoves] = useState([]);
   const [trackers, setTrackers] = useState([]);
