@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-
 function HorizontalTracker(tracker, handler) {
   return (
     <div className='Horizontal'>

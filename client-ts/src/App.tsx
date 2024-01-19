@@ -28,7 +28,7 @@ function App() {
     if (cookieID) setUserID(cookieID.slice(3, -1));
   }, []);
 
-  const login = (username, password) => {
+  const login = (username:string, password:string) => {
     client.post('login', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data);
       else setUserID(response.data);
@@ -37,7 +37,7 @@ function App() {
     });
   };
 
-  const signup = (username, password) => {
+  const signup = (username:string, password:string) => {
     client.post('signup', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details') setLoginIssue(response.data);
       else setUserID(response.data);

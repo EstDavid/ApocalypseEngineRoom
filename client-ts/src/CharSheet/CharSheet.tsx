@@ -11,6 +11,7 @@ import roll_2 from '../assets/roll_2.mp3';
 import roll_3 from '../assets/roll_3.mp3';
 import roll_4 from '../assets/roll_4.mp3';
 import roll_5 from '../assets/roll_5.mp3';
+import { AxiosResponse } from 'axios';
 
 function CharSheet({client}) {
   const [charInfo, setCharInfo] = useState({});
@@ -21,8 +22,8 @@ function CharSheet({client}) {
   const [rolls, setRolls] = useState([]);
 
   useEffect(()=> {
-    if (queryParameters.get("CharID")) {
-      client.get(`/character/${queryParameters.get("CharID")}`, {withCredentials: true}).then((response) => {
+    if (queryParameters.get('CharID')) {
+      client.get(`/character/${queryParameters.get('CharID')}`, {withCredentials: true}).then((response) => {
         const partialCharInfo = response.data;
 
         const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true});
@@ -32,16 +33,16 @@ function CharSheet({client}) {
         Promise.all([playbook_full, moves_full, trackers_full]).then(function([playbook_full, moves_full, trackers_full]) {
           const [pb, mvs, trks] = [playbook_full.data, moves_full.data, trackers_full.data];
           setCharInfo({
-            "name": partialCharInfo.name,
-            "systemName": partialCharInfo.system,
-            "available_at": pb.available_at,
-            "madeBy": pb.madeBy,
-            "playbook": pb.name,
-            "charDescription": partialCharInfo.charDescription,
-            "playingThis": pb.playingThis,
-            "playbookDescription" : pb.description,
-            "movesText": pb.movesText,
-            "notes": partialCharInfo.notes
+            'name': partialCharInfo.name,
+            'systemName': partialCharInfo.system,
+            'available_at': pb.available_at,
+            'madeBy': pb.madeBy,
+            'playbook': pb.name,
+            'charDescription': partialCharInfo.charDescription,
+            'playingThis': pb.playingThis,
+            'playbookDescription' : pb.description,
+            'movesText': pb.movesText,
+            'notes': partialCharInfo.notes
           });
           setStats(partialCharInfo.stats);
           setMoves(mvs.map((m) => {return {...m, isAvailable: partialCharInfo.moves.find(charM => charM._id == m._id).isAvailable};}));
@@ -52,11 +53,11 @@ function CharSheet({client}) {
   }, [queryParameters]);
 
   const updateTextArea = (newText, fieldName) => {
-    client.post(`character/${queryParameters.get("CharID")}`, {
-      "updatedField": fieldName,
-      "newVal": newText
+    client.post(`character/${queryParameters.get('CharID')}`, {
+      'updatedField': fieldName,
+      'newVal': newText
     }, {withCredentials: true})
-      .then(function (response) {
+      .then(function (response:AxiosResponse) {
         setCharInfo({
           ...charInfo,
           fieldName: response.data[fieldName]
@@ -68,9 +69,9 @@ function CharSheet({client}) {
   };
 
   const updateStat = (statName, newVal) => {
-    client.post(`character/${queryParameters.get("CharID")}`, {
-      "updatedField": "stats",
-      "newVal": stats.map((s) => {
+    client.post(`character/${queryParameters.get('CharID')}`, {
+      'updatedField': 'stats',
+      'newVal': stats.map((s) => {
         if (s.name == statName) s.value = newVal;
         return s;
       }, {withCredentials: true})
@@ -84,9 +85,9 @@ function CharSheet({client}) {
   };
 
   const updateTextTracker = (trackerName, newText) => {
-    client.post(`character/${queryParameters.get("CharID")}`, {
-      "updatedField": "trackers",
-      "newVal": trackers.map((t) => {
+    client.post(`character/${queryParameters.get('CharID')}`, {
+      'updatedField': 'trackers',
+      'newVal': trackers.map((t) => {
         if (t.name == trackerName) {t.value = newText;}
         return {_id: t._id, value: t.value};
       })
@@ -101,9 +102,9 @@ function CharSheet({client}) {
 
   const updateCheckboxTracker = (trackerName, changedIndex) => {
 
-    client.post(`character/${queryParameters.get("CharID")}`, {
-      "updatedField": "trackers",
-      "newVal":trackers.map((t) => {
+    client.post(`character/${queryParameters.get('CharID')}`, {
+      'updatedField': 'trackers',
+      'newVal':trackers.map((t) => {
         if (t.name == trackerName) {
           t.value = t.value.map(item => {
             if (item.index == changedIndex) {
@@ -115,7 +116,7 @@ function CharSheet({client}) {
         return t;
       })
     }, {withCredentials: true})
-      .then(function (response) {
+      .then(function (response:AxiosResponse) {
         setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value};}));
       })
       .catch(function (error) {
@@ -126,14 +127,14 @@ function CharSheet({client}) {
   const trackerHandlers = {updateTextTracker, updateCheckboxTracker};
 
   const toggleMoveAvailable = (toggledMove) => {
-    client.post(`character/${queryParameters.get("CharID")}`, {
-      "updatedField": "moves",
-      "newVal": moves.map(m => {
+    client.post(`character/${queryParameters.get('CharID')}`, {
+      'updatedField': 'moves',
+      'newVal': moves.map(m => {
         if (m.name == toggledMove.name) m.isAvailable = !m.isAvailable;
         return m;
       })
     }, {withCredentials: true})
-      .then(function (response) {
+      .then(function (response:AxiosResponse) {
         setMoves(moves.map(m => {
           const newAvailable = response.data.moves.find(charM => charM._id == m._id).isAvailable;
           return {...m, isAvailable: newAvailable, isModAdded: newAvailable && m.isModAdded};
@@ -193,19 +194,19 @@ function CharSheet({client}) {
           <textarea
             name="CharDesc"
             id="CharDesc"
-            rows="3"
+            rows={3}
             defaultValue={charInfo.charDescription}
-            onChange={e => {updateTextArea(e.target.value, "charDescription");}}
+            onChange={e => {updateTextArea(e.target.value, 'charDescription');}}
           />
           <h2>Stats:</h2>
           <div className='StatList'>
-            {stats? stats.map(s => <StatView key={s.name} stat={s} handler={updateStat} rollDice={rollDice}></StatView>): ""}
+            {stats? stats.map(s => <StatView key={s.name} stat={s} handler={updateStat} rollDice={rollDice}></StatView>): ''}
           </div>
-          {charInfo.playbookDescription ? charInfo.playbookDescription.map((par, i) => {return <p key={i}>{par}</p>;}): ""}
+          {charInfo.playbookDescription ? charInfo.playbookDescription.map((par, i) => {return <p key={i}>{par}</p>;}): ''}
           {charInfo.playingThis && charInfo.playingThis.length ? <div>
             <h2>Playing {charInfo.playbook}</h2>
             {charInfo.playingThis.map((par, i) => {return <p key={i}>{par}</p>;})}
-          </div> :""}
+          </div> :''}
           <div className='CreditDiv'>
             <p>{charInfo.systemName} was made by {charInfo.madeBy}, and is available at: <a href={charInfo.available_at}>{charInfo.available_at}</a></p>
           </div>
@@ -213,9 +214,9 @@ function CharSheet({client}) {
           <textarea
             name="Notes"
             id="Notes"
-            rows="10"
+            rows={10}
             defaultValue={charInfo.notes}
-            onChange={e => {updateTextArea(e.target.value, "notes");}}
+            onChange={e => {updateTextArea(e.target.value, 'notes');}}
           />
         </div>
         <div className='col' id='moveCol'>
@@ -226,13 +227,13 @@ function CharSheet({client}) {
               {moves.filter((m) => m.playbook == 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={()=>{}} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
 
               <h2>{charInfo.playbook} Moves:</h2>
-              {charInfo.movesText? <p>{charInfo.movesText}</p> : ""}
+              {charInfo.movesText? <p>{charInfo.movesText}</p> : ''}
               {moves.filter((m) => m.playbook != 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={toggleMoveAvailable} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
             </>
-            : ""}
+            : ''}
         </div>
         <div className='col' id='trackerCol'>
-          {trackers? trackers.map((t) => <Tracker tracker={t} key={t.name} trackerHandlers={trackerHandlers}/>) : ""}
+          {trackers? trackers.map((t) => <Tracker tracker={t} key={t.name} trackerHandlers={trackerHandlers}/>) : ''}
         </div>
       </div>
     </div>

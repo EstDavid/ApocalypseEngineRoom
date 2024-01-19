@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './NewChar.css';
 import Select from 'react-select';
+import { AxiosResponse } from 'axios';
 
 function NewChar({userID, client}) {
   const [playbookList, setPlaybookList] = useState([]);
@@ -11,7 +12,7 @@ function NewChar({userID, client}) {
   const [newCharName, setNewCharName] = useState('');
 
   useEffect(()=> {
-    client.get('playbooks', {withCredentials: true}).then((response) => {
+    client.get('playbooks', {withCredentials: true}).then((response:AxiosResponse) => {
       setPlaybookList(response.data);
       const sysList = [...new Set(response.data.map(pb => pb.systemName))].map((s) => {return { value: s, label: s };});
       setSystemList(sysList);
@@ -27,7 +28,7 @@ function NewChar({userID, client}) {
       stats: selectedPlaybook.statsOptions[selectedStatsIndex]
     };
 
-    client.post('characters', newCharInfo, {withCredentials: true}).then((response) => {
+    client.post('characters', newCharInfo, {withCredentials: true}).then((response:AxiosResponse) => {
       window.location.replace(`http://localhost:5173/CharacterSheet?CharID=${response.data}`,);
     });
   };

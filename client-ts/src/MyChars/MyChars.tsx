@@ -4,6 +4,7 @@ import Select from 'react-select';
 
 import './MyChars.css';
 import CharCard from './CharCard';
+import { AxiosResponse } from 'axios';
 
 function MyChars({userID, client}) {
   const [charList, setCharList] = useState([]);
@@ -18,11 +19,12 @@ function MyChars({userID, client}) {
   }, [userID]);
 
   const deleteChar = (id) => {
-    client.delete(`character/${id}`, {withCredentials: true}).then
-    (client.get('characters', {withCredentials: true}).then((response) => {
-      setCharList(response.data);
-    })
-    );
+    client.delete(`character/${id}`, {withCredentials: true})
+      .then(client.get('characters', {withCredentials: true})
+        .then((response:AxiosResponse) => {
+          setCharList(response.data);
+        })
+      );
   };
 
   return (
