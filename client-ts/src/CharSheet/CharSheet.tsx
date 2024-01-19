@@ -11,9 +11,10 @@ import roll_2 from '../assets/roll_2.mp3';
 import roll_3 from '../assets/roll_3.mp3';
 import roll_4 from '../assets/roll_4.mp3';
 import roll_5 from '../assets/roll_5.mp3';
-import { AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
-function CharSheet({client}) {
+
+function CharSheet({client}: {client: AxiosInstance}) { //!! this is an AxiosInstance but am having problems defining it
   const [charInfo, setCharInfo] = useState({});
   const [moves, setMoves] = useState([]);
   const [trackers, setTrackers] = useState([]);
@@ -23,7 +24,7 @@ function CharSheet({client}) {
 
   useEffect(()=> {
     if (queryParameters.get('CharID')) {
-      client.get(`/character/${queryParameters.get('CharID')}`, {withCredentials: true}).then((response) => {
+      client.get(`/character/${queryParameters.get('CharID')}`, {withCredentials: true}).then((response:AxiosResponse) => {
         const partialCharInfo = response.data;
 
         const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, {withCredentials: true});
@@ -76,7 +77,7 @@ function CharSheet({client}) {
         return s;
       }, {withCredentials: true})
     } , {withCredentials: true})
-      .then(function (response) {
+      .then(function (response:AxiosResponse) {
         setStats(response.data.stats);
       })
       .catch(function (error) {
@@ -92,7 +93,7 @@ function CharSheet({client}) {
         return {_id: t._id, value: t.value};
       })
     }, {withCredentials: true})
-      .then(function (response) {
+      .then(function (response:AxiosResponse) {
         setTrackers(trackers.map(t => {return {...t, value: response.data.trackers.find(charT => charT._id == t._id).value};}));
       })
       .catch(function (error) {
@@ -239,4 +240,5 @@ function CharSheet({client}) {
     </div>
   );
 }
+
 export default CharSheet;
