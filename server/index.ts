@@ -3,6 +3,9 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import usersRouter from './routers/users';
 import charactersRouter from './routers/characters';
+import movesRouter from './routers/moves';
+import trackersRouter from './routers/trackers';
+import playbooksRouter from './routers/playbooks';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -43,8 +46,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/user', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);
+app.use('/api/moves', movesRouter);
+app.use('/api/trackers', trackersRouter);
+app.use('/api/playbooks', playbooksRouter);
 
 const PORT = 3000;
 
