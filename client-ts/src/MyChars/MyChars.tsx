@@ -4,64 +4,97 @@ import Select from 'react-select';
 
 import './MyChars.css';
 import CharCard from './CharCard';
-import { AxiosResponse } from 'axios';
+import * as characterService from '../services/characters';
+import { Character } from '../types';
 
-function MyChars({userID, client}) {
-  const [charList, setCharList] = useState([]);
-  const [activeFilters, setActiveFilters] = useState([]);
+interface MyCharFilter {
+  label: string;
+  options: { value: string; label: string }[];
+}
 
-  useEffect(()=> {
+function MyChars({ userID }: { userID: string }) {
+  const [charList, setCharList] = useState<Character[]>([]);
+  const [activeFilters, setActiveFilters] = useState<readonly MyCharFilter[]>(
+    []
+  );
+
+  const optionsGroups: { label: string; options: 'system' | 'playbook' }[] = [
+    {
+      label: 'Systems',
+      options: 'system'
+    },
+    {
+      label: 'Playbooks',
+      options: 'playbook'
+    }
+  ];
+
+  useEffect(() => {
     if (userID) {
-      client.get('/characters/', {withCredentials: true}).then((response) => {
+      characterService.getAll().then((response) => {
         setCharList(response.data);
       });
+      // TODO Add catch statement and send error to store
     }
   }, [userID]);
 
-  const deleteChar = (id) => {
-    client.delete(`character/${id}`, {withCredentials: true})
-      .then(client.get('characters', {withCredentials: true})
-        .then((response:AxiosResponse) => {
-          setCharList(response.data);
-        })
-      );
+  const deleteChar = (id: string) => {
+    characterService.remove(id).then(() => {
+      // TODO update status with the removed character
+    });
+  };
+
+  const handleFilterChange = (selected: readonly MyCharFilter[] | null) => {
+    if (selected) {
+      setActiveFilters(selected);
+    }
   };
 
   return (
-    <div className='MyChars'>
+    <div className="MyChars">
       <h1>My Characters</h1>
-      <div className='filterDiv'>
+      <div className="filterDiv">
         <p>Include:</p>
         <Select
           isMulti
           name="filters"
-          options={[
-            {
-              label: 'Systems',
-              options: [...new Set(charList.map(c => c.system))].map((s) => {return {value: s, label: s};})
-            },
-            {
-              label: 'Playbooks',
-              options: [...new Set(charList.map(c => c.playbook))].map((p) => {return {value: p, label: p};})
-            }
-          ]}
+          options={optionsGroups.map((group) => {
+            return {
+              label: group.label,
+              options: [...new Set(charList.map((c) => c[group.options]))].map(
+                (s) => {
+                  return { value: s, label: s };
+                }
+              )
+            };
+          })}
           value={activeFilters}
-          onChange={setActiveFilters}
+          onChange={handleFilterChange}
           className="filterSelect"
         />
       </div>
-      <div className='CharView'>
+      <div className="CharView">
         <Link to={'NewCharacter'}>
-          <div className='CharCard AddChar'>
+          <div className="CharCard AddChar">
             <h1>Add Character</h1>
             <h1>+</h1>
           </div>
         </Link>
-        {charList.filter((c) => {
-          return activeFilters.length == 0 || activeFilters.some((f) => f.value == c.playbook || f.value == c.system);
-        }).map((c, i) =>
-          <CharCard char={c} key={i} deleteChar={deleteChar}/>
-        )}
+        {charList
+          // TODO: refactor update of this filter
+          .filter((c) => {
+            return (
+              activeFilters.length == 0 ||
+              activeFilters.some((f) =>
+                f.options.some((option) => {
+                  option.value == c.playbook || option.value == c.system;
+                })
+              )
+            );
+          })
+          .map((c, i) => (
+            <CharCard char={c} key={i} deleteChar={deleteChar} />
+          ))}
       </div>
     </div>
   );
