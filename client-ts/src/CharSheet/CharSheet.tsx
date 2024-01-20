@@ -97,7 +97,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
       })
     }, { withCredentials: true })
       .then(function (response: AxiosResponse) {
-        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find((charT: ITracker) => charT._id == t._id).value }; }));
+        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find((charT: ITracker<string>) => charT._id == t._id).value }; }));
       })
       .catch(function (error) {
         console.log(error);
