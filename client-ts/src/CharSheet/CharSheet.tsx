@@ -15,6 +15,7 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 import {
   IUpdateTextArea, Stat, IUpdateStat, ITracker,
   IUpdateTextTracker, IUpdateCheckboxTracker, ITrackerValueObj,
+  IRollDice, IRemoveRoll
 } from '../types';
 
 function CharSheet({ client }: { client: AxiosInstance }) {
@@ -23,7 +24,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
   const [trackers, setTrackers] = useState<ITracker<ITrackerValueObj[] | string>[]>([]);
   const [stats, setStats] = useState<Stat[]>([]);
   const [queryParameters] = useSearchParams();
-  const [rolls, setRolls] = useState([]);
+  const [rolls, setRolls] = useState<DiceRoll[]>([]);
 
   useEffect(() => {
     if (queryParameters.get('CharID')) {
@@ -158,7 +159,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
     }));
   };
 
-  const modToText = (mod) => {
+  const modToText = (mod:number|string) => {
     if (typeof (mod) == 'number') return `${mod < 0 ? ' ' : ' + '}${mod}`;
     let modText = '';
     stats.forEach((stat) => {
@@ -169,7 +170,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
 
   const rollSounds = [roll_1, roll_2, roll_3, roll_4, roll_5].map(r => new Audio(r));
 
-  const rollDice = (baseRoll, rollMod) => {
+  const rollDice:IRollDice = (baseRoll, rollMod) => {
     let roll = baseRoll;
     if (rollMod) {
       roll += modToText(rollMod);
@@ -181,8 +182,8 @@ function CharSheet({ client }: { client: AxiosInstance }) {
     rollSounds[Math.floor(Math.random() * rollSounds.length)].play();
   };
 
-  const removeRoll = (rollIndex) => {
-    setRolls(rolls.toSpliced(rollIndex, 1));
+  const removeRoll:IRemoveRoll = (rollIndex) => {
+    setRolls(rolls.toSpliced(rollIndex, 1)); //!!FIXME
   };
 
   return (

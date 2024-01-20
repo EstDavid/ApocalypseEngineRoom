@@ -1,4 +1,6 @@
- function BtnGroup({rollDice, mod}) {
+import { IRollDice } from '../types';
+
+function BtnGroup({rollDice, mod}:{rollDice:IRollDice, mod:number}) {
   return (
     <div className='RollButtons'>
       <button className='mainRoll' onClick={()=>{rollDice('2d6', mod);}}>Roll</button>

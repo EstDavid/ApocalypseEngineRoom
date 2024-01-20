@@ -106,7 +106,8 @@ export type IUpdateTextTracker = (trackerName:string, newText:string) => void;
 export type IUpdateCheckboxTracker = (trackerName:string, changedIndex:number) => void;
 export type ITextTracker = (tracker:ITracker<string>, handler:IUpdateTextTracker) =>  ReactElement;
 export type ILineTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateCheckboxTracker) => void;
-
+export type IRollDice = (baseroll:string, rollMod:number) => void;
+export type IRemoveRoll = (rollIndex:number) => void;
 
 export interface ITrackerHandlers {
   updateCheckboxTracker:IUpdateCheckboxTracker,

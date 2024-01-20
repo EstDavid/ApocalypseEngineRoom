@@ -1,7 +1,7 @@
 import BtnGroup from './BtnGroup';
-import {Stat, IUpdateStat} from '../types';
+import {Stat, IUpdateStat, IRollDice} from '../types';
 
-function StatView({stat, handler, rollDice}:{stat:Stat, handler:IUpdateStat}) {
+function StatView({stat, handler, rollDice}:{stat:Stat, handler:IUpdateStat, rollDice:IRollDice}) {
   return (
     <div className='StatView'>
       <input type="text" name={stat.name} defaultValue={stat.value}
