@@ -50,7 +50,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
           });
           setStats(partialCharInfo.stats);
           setMoves(mvs.map((m: Move) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: Move) => charM._id == m._id).isAvailable }; }));
-          setTrackers(trks.map(t => { return { ...t, value: partialCharInfo.trackers.find(charT => charT._id == t._id).value }; }));
+          setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => { return { ...t, value: partialCharInfo.trackers.find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
         });
       });
     }
@@ -123,7 +123,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
       })
     }, { withCredentials: true })
       .then(function (response: AxiosResponse) {
-        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find(charT => charT._id == t._id).value }; }));
+        setTrackers(trackers.map(t => { return { ...t, value: response.data.trackers.find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
       })
       .catch(function (error) {
         console.log(error);
