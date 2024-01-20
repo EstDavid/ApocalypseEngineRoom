@@ -12,7 +12,7 @@ import session from 'express-session';
 
 mongoose.set('strictQuery', false);
 
-const MONGO_DB_URI = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' ?
+const MONGO_DB_URI = process.env.NODE_ENV === 'test' ?
   process.env.DATABASE_REMOTE_TEST : process.env.DATABASE_REMOTE;
 
 console.log(`Connecting to MongoDB at ${MONGO_DB_URI}`);
