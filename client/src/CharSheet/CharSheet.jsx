@@ -49,6 +49,7 @@ function CharSheet({ client }) {
                 moves_full.data,
                 trackers_full.data
               ];
+              console.log({ pb }, { mvs }, { trks });
               setCharInfo({
                 name: partialCharInfo.name,
                 systemName: partialCharInfo.system,
@@ -64,21 +65,23 @@ function CharSheet({ client }) {
               setStats(partialCharInfo.stats);
               setMoves(
                 mvs.map((m) => {
+                  const move = partialCharInfo.moves.find(
+                    (charM) => charM._id == m._id
+                  );
                   return {
                     ...m,
-                    isAvailable: partialCharInfo.moves.find(
-                      (charM) => charM._id == m._id
-                    ).isAvailable
+                    isAvailable: move ? move.isAvailable : false
                   };
                 })
               );
               setTrackers(
                 trks.map((t) => {
+                  const tracker = partialCharInfo.trackers.find(
+                    (charT) => charT._id == t._id
+                  );
                   return {
                     ...t,
-                    value: partialCharInfo.trackers.find(
-                      (charT) => charT._id == t._id
-                    ).value
+                    value: tracker ? tracker.value : t.value
                   };
                 })
               );
