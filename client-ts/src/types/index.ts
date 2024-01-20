@@ -108,6 +108,8 @@ export type ITextTracker = (tracker:ITracker<string>, handler:IUpdateTextTracker
 export type ILineTracker = (tracker:ITracker<ITrackerValueObj[] | string>, handler:IUpdateCheckboxTracker) => void;
 export type IRollDice = (baseroll:string, rollMod:number) => void;
 export type IRemoveRoll = (rollIndex:number) => void;
+export type IToggleMoveAvailable = (toggledMove:Move) => void;
+export type IToggleMoveAddMod = (toggledMove:Move) => void;
 
 export interface ITrackerHandlers {
   updateCheckboxTracker:IUpdateCheckboxTracker,

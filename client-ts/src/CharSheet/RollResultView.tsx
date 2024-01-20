@@ -37,15 +37,16 @@ function dieStyle(dice:RollResults[], die:RollResult) {
 
 function diceIcons(dice:RollResults[]) {
   return dice.map((die, i) => {
+
     const Icon = valToIcon[die.value as 1 | 2 | 3 | 4 | 5 | 6]; //* gross!!
-    return < Icon key={i} className={dieStyle(dice, die)}/>;
+    return < Icon key={i} className={dieStyle(dice, die as unknown as RollResult)}/>;
   });
 }
 
 function RollResultView({roll, index, removeRoll}:{roll:DiceRoll, index:number, removeRoll:IRemoveRoll}) {
   return (
     <div className="RollResult">
-      {diceIcons(roll.rolls[0].rolls as RollResults[])}
+      {Array.isArray(roll.rolls) && diceIcons(roll.rolls as RollResults[])}
       <p>
         {roll.rolls.slice(1).map(m => `${m}`).join(' ')} = {roll.total}
       </p>

@@ -16,7 +16,7 @@ import './App.css'
 
 
 const client = axios.create({
-  baseURL: "http://localhost:3000" 
+  baseURL: "http://localhost:3000/api"
 });
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
   }, [])
 
   const login = (username, password) => {
-    client.post(`login`, {username, password} , {withCredentials: true}).then((response) => {
+    client.post(`/users/login`, {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data)
       else setUserID(response.data)
     }).catch((err) => {
@@ -38,7 +38,7 @@ function App() {
   }
 
   const signup = (username, password) => {
-    client.post(`signup`, {username, password} , {withCredentials: true}).then((response) => {
+    client.post(`/users/signup`, {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details') setLoginIssue(response.data)
       else setUserID(response.data)
     })
@@ -53,7 +53,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
-      { userID.length ? 
+      { userID.length ?
         <div className='NavBar'>
             <Link to="/">
               <div className='NavBtn'>
