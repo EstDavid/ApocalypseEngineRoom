@@ -1,14 +1,15 @@
 import express, { Express } from 'express';
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+
 import usersRouter from './routers/users';
 import charactersRouter from './routers/characters';
 import movesRouter from './routers/moves';
 import trackersRouter from './routers/trackers';
 import playbooksRouter from './routers/playbooks';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
 
 mongoose.set('strictQuery', false);
 
