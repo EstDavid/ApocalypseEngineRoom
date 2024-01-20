@@ -10,11 +10,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
-      - name: create env file
-        run: |
-          touch .env
-          echo DATABASE_REMOTE_TEST=${{secrets.DATABASE_REMOTE_TEST}} >> .env
-          echo SECRET=${{secrets.secret}} >> .env
       - uses: actions/setup-node@v4
         with:
           node-version: '16'
@@ -27,4 +22,7 @@ jobs:
       # - name: Build
       #   run: npm run build
       - name: Test server
+        env:
+          DATABASE_REMOTE_TEST: ${{secrets.DATABASE_REMOTE_TEST}}
+          SECRET: ${{secrets.SECRET}}
         run: cd server && npm test
