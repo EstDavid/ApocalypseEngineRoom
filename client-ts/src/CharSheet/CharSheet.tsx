@@ -65,13 +65,23 @@ function CharSheet({ client }: { client: AxiosInstance }) {
           setStats(partialCharInfo.stats);
           setMoves(
             mvs.map((m: IMove) => {
-              return { ...m, isAvailable: partialCharInfo.moves
-                .find(
-                  (charM: IMove) => charM._id == m._id).isAvailable }; }));
+              const move = partialCharInfo.moves.find(
+                (charM:IMove) => charM._id == m._id
+              );
+              return {
+                ...m,
+                isAvailable: move ? move.isAvailable : false
+              };})
+          );
           setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => {
+            const tracker = partialCharInfo.trackers.find(
+              (charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id
+            );
             return {
-              ...t, value: partialCharInfo.trackers
-                .find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
+              ...t,
+              value: tracker ? tracker.value : t.value
+            };})
+          );
         });
       });
     }
@@ -94,7 +104,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
   };
 
   const updateStat: IUpdateStat = (statName, newVal) => {
-    client.post(`character/${queryParameters.get('CharID')}`, {
+    client.post(`/api/characters/${queryParameters.get('CharID')}`, {
       'updatedField': 'stats',
       'newVal': stats.map((s) => {
         if (s.name == statName) s.value = newVal;
@@ -110,7 +120,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
   };
 
   const updateTextTracker: IUpdateTextTracker = (trackerName, newText) => {
-    client.post(`character/${queryParameters.get('CharID')}`, {
+    client.post(`/api/characters/${queryParameters.get('CharID')}`, {
       'updatedField': 'trackers',
       'newVal': trackers.map((t) => {
         if (t.name == trackerName) { t.value = newText; } //** */
@@ -127,7 +137,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
 
   const updateCheckboxTracker: IUpdateCheckboxTracker = (trackerName, changedIndex) => {
 
-    client.post(`character/${queryParameters.get('CharID')}`, {
+    client.post(`/api/characters/${queryParameters.get('CharID')}`, {
       'updatedField': 'trackers',
       'newVal': trackers.map((t) => {
         if (t.name == trackerName) {
@@ -154,7 +164,9 @@ function CharSheet({ client }: { client: AxiosInstance }) {
   const trackerHandlers = { updateTextTracker, updateCheckboxTracker };
 
   const toggleMoveAvailable = (toggledMove: IMove) => {
-    client.post(`character/${queryParameters.get('CharID')}`, {
+    console.log('hi');
+
+    client.post(`/api/characters/${queryParameters.get('CharID')}`, {
       'updatedField': 'moves',
       'newVal': moves.map(m => {
         if (m.name == toggledMove.name) m.isAvailable = !m.isAvailable;
