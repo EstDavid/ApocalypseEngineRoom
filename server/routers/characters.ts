@@ -1,10 +1,12 @@
-import { route } from '../types';
+import { Router } from 'express';
 import * as charactersController from '../controller/characters';
 
-route('get', '/', charactersController.getChars);
-route('post', '/', charactersController.addChar);
-route('get', '/:id', charactersController.getCharById);
-route('post', '/:id', charactersController.updateChar);
-route('delete', '/:id', charactersController.deleteChar);
+const router = Router();
 
-export default route;
+router.get('/', charactersController.getChars);
+router.post('/', charactersController.addChar);
+router.get('/:id', charactersController.getCharById);
+router.post('/:id', charactersController.updateChar);
+router.delete('/:id', charactersController.deleteChar);
+
+export default router;

@@ -1,8 +1,10 @@
-import { route, routeWithoutPromise } from '../types';
+import { Router } from 'express';
 import * as usersController from '../controller/users';
 
-route('post', '/login', usersController.getUser);
-route('post', '/signup', usersController.addUser);
-routeWithoutPromise('post', '/logout', usersController.logout);
+const router = Router();
 
-export default route;
+router.post('/login', usersController.getUser);
+router.post('/signup', usersController.addUser);
+router.post('/logout', usersController.logout);
+
+export default router;

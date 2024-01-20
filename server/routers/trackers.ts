@@ -1,6 +1,8 @@
-import { route } from '../types';
+import { Router } from 'express';
 import * as trackersController from '../controller/trackers';
 
-route('get', '/:system/:playbook', trackersController.getTrackers);
+const router = Router();
 
-export default route;
+router.get('/:system/:playbook', trackersController.getTrackers);
+
+export default router;
