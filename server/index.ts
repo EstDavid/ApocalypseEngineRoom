@@ -15,7 +15,7 @@ mongoose.set('strictQuery', false);
 const MONGO_DB_URI = process.env.NODE_ENV === 'test' ?
   process.env.DATABASE_REMOTE_TEST : process.env.DATABASE_REMOTE;
 
-console.log(`Connecting to MongoDB at ${MONGO_DB_URI}`);
+console.log(`Connecting to MongoDB`);
 
 if (!MONGO_DB_URI) {
   throw new Error('No database uri provided');
@@ -54,6 +54,8 @@ app.use('/api/playbooks', playbooksRouter);
 
 const PORT = 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
+
+export default server;
