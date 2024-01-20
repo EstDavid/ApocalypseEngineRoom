@@ -15,7 +15,7 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 import {
   IUpdateTextArea, Stat, IUpdateStat, ITracker,
   IUpdateTextTracker, IUpdateCheckboxTracker, ITrackerValueObj,
-  IRollDice, IRemoveRoll, ICharInfo,
+  IRollDice, IRemoveRoll, ICharInfo, IMove
 } from '../types';
 
 function CharSheet({ client }: { client: AxiosInstance }) {
@@ -32,7 +32,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
     'notes': '',
     'fieldName':''
   });
-  const [moves, setMoves] = useState<Move[]>([]);
+  const [moves, setMoves] = useState<IMove[]>([]);
   const [trackers, setTrackers] = useState<ITracker<ITrackerValueObj[] | string>[]>([]);
   const [stats, setStats] = useState<Stat[]>([]);
   const [queryParameters] = useSearchParams();
@@ -63,7 +63,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
             'fieldName':''
           });
           setStats(partialCharInfo.stats);
-          setMoves(mvs.map((m: Move) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: Move) => charM._id == m._id).isAvailable }; }));
+          setMoves(mvs.map((m: IMove) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: IMove) => charM._id == m._id).isAvailable }; }));
           setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => { return { ...t, value: partialCharInfo.trackers.find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
         });
       });
@@ -146,7 +146,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
 
   const trackerHandlers = { updateTextTracker, updateCheckboxTracker };
 
-  const toggleMoveAvailable = (toggledMove: Move) => {
+  const toggleMoveAvailable = (toggledMove: IMove) => {
     client.post(`character/${queryParameters.get('CharID')}`, {
       'updatedField': 'moves',
       'newVal': moves.map(m => {
@@ -156,7 +156,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
     }, { withCredentials: true })
       .then(function (response: AxiosResponse) {
         setMoves(moves.map(m => {
-          const newAvailable = response.data.moves.find((charM: Move) => charM._id == m._id).isAvailable; //!!FIXME - find()=undefined??
+          const newAvailable = response.data.moves.find((charM: IMove) => charM._id == m._id).isAvailable; //!!FIXME - find()=undefined??
           return { ...m, isAvailable: newAvailable, isModAdded: newAvailable && m.isModAdded };
         }));
       })
@@ -165,7 +165,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
       });
   };
 
-  const toggleMoveAddMod = (toggledMove: Move) => {
+  const toggleMoveAddMod = (toggledMove: IMove) => {
     setMoves(moves.map(m => {
       if (m.name == toggledMove.name) { m.isModAdded = !m.isModAdded; }
       return m;
