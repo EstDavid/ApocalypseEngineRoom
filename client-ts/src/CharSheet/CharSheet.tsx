@@ -15,11 +15,23 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 import {
   IUpdateTextArea, Stat, IUpdateStat, ITracker,
   IUpdateTextTracker, IUpdateCheckboxTracker, ITrackerValueObj,
-  IRollDice, IRemoveRoll
+  IRollDice, IRemoveRoll, ICharInfo,
 } from '../types';
 
 function CharSheet({ client }: { client: AxiosInstance }) {
-  const [charInfo, setCharInfo] = useState({});
+  const [charInfo, setCharInfo] = useState<ICharInfo>({
+    'name': '',
+    'systemName': '',
+    'available_at': '',
+    'madeBy': '',
+    'playbook': '',
+    'charDescription': '',
+    'playingThis': [''],
+    'playbookDescription': [''],
+    'movesText': '',
+    'notes': '',
+    'fieldName':''
+  });
   const [moves, setMoves] = useState<Move[]>([]);
   const [trackers, setTrackers] = useState<ITracker<ITrackerValueObj[] | string>[]>([]);
   const [stats, setStats] = useState<Stat[]>([]);
@@ -47,7 +59,8 @@ function CharSheet({ client }: { client: AxiosInstance }) {
             'playingThis': pb.playingThis,
             'playbookDescription': pb.description,
             'movesText': pb.movesText,
-            'notes': partialCharInfo.notes
+            'notes': partialCharInfo.notes,
+            fieldName:''
           });
           setStats(partialCharInfo.stats);
           setMoves(mvs.map((m: Move) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: Move) => charM._id == m._id).isAvailable }; }));
@@ -176,7 +189,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
       roll += modToText(rollMod);
     }
 
-    roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod)).join('');
+    roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod as string)).join('');
     setRolls([...rolls, new DiceRoll(roll)]);
     setMoves(moves.map(m => { m.isModAdded = false; return m; }));
     rollSounds[Math.floor(Math.random() * rollSounds.length)].play();

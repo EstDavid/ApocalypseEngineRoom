@@ -18,7 +18,7 @@ export interface User {
   _id: string,
 }
 
-export interface Character {
+export interface ICharacter {
   _id: string,
   name: string,
   system: string,
@@ -49,6 +49,20 @@ export interface Character {
   ],
   owner: string,
   notes: string,
+}
+
+export interface ICharInfo {
+  name: string,
+  systemName: string,
+  available_at: string,
+  madeBy: string,
+  playbook: string,
+  charDescription: string,
+  playingThis: [string],
+  playbookDescription: [string],
+  movesText: string,
+  notes: string,
+  fieldName: string,
 }
 
 export interface Stat {
