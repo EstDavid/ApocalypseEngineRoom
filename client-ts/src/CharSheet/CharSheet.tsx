@@ -60,7 +60,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
             'playbookDescription': pb.description,
             'movesText': pb.movesText,
             'notes': partialCharInfo.notes,
-            fieldName:''
+            'fieldName':''
           });
           setStats(partialCharInfo.stats);
           setMoves(mvs.map((m: Move) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: Move) => charM._id == m._id).isAvailable }; }));
