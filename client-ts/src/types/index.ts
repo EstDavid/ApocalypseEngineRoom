@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export interface Move {
+export interface IMove {
   _id: string,
   name: string,
   system: string,

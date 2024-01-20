@@ -40,12 +40,12 @@ function CharSheet({ client }: { client: AxiosInstance }) {
 
   useEffect(() => {
     if (queryParameters.get('CharID')) {
-      client.get(`/character/${queryParameters.get('CharID')}`, { withCredentials: true }).then((response: AxiosResponse) => {
+      client.get(`/api/characters/${queryParameters.get('CharID')}`, { withCredentials: true }).then((response: AxiosResponse) => {
         const partialCharInfo = response.data;
 
-        const playbook_full = client.get(`/playbook/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
-        const moves_full = client.get(`/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
-        const trackers_full = client.get(`/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
+        const playbook_full = client.get(`/api/playbooks/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
+        const moves_full = client.get(`/api/moves/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
+        const trackers_full = client.get(`/api/trackers/${partialCharInfo.system}/${partialCharInfo.playbook}`, { withCredentials: true });
 
         Promise.all([playbook_full, moves_full, trackers_full]).then(function ([playbook_full, moves_full, trackers_full]) {
           const [pb, mvs, trks] = [playbook_full.data, moves_full.data, trackers_full.data];
@@ -63,8 +63,15 @@ function CharSheet({ client }: { client: AxiosInstance }) {
             'fieldName':''
           });
           setStats(partialCharInfo.stats);
-          setMoves(mvs.map((m: IMove) => { return { ...m, isAvailable: partialCharInfo.moves.find((charM: IMove) => charM._id == m._id).isAvailable }; }));
-          setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => { return { ...t, value: partialCharInfo.trackers.find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
+          setMoves(
+            mvs.map((m: IMove) => {
+              return { ...m, isAvailable: partialCharInfo.moves
+                .find(
+                  (charM: IMove) => charM._id == m._id).isAvailable }; }));
+          setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => {
+            return {
+              ...t, value: partialCharInfo.trackers
+                .find((charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id).value }; }));
         });
       });
     }

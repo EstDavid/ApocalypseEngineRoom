@@ -5,7 +5,7 @@ import Select from 'react-select';
 import './MyChars.css';
 import CharCard from './CharCard';
 import * as characterService from '../services/characters';
-import { Character } from '../types';
+import { ICharacter } from '../types';
 
 interface MyCharFilter {
   label: string;
@@ -13,7 +13,7 @@ interface MyCharFilter {
 }
 
 function MyChars({ userID }: { userID: string }) {
-  const [charList, setCharList] = useState<Character[]>([]);
+  const [charList, setCharList] = useState<ICharacter[]>([]);
   const [activeFilters, setActiveFilters] = useState<readonly MyCharFilter[]>(
     []
   );
