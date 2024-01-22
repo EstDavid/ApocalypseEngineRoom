@@ -8,7 +8,7 @@ const config: Config = {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': 'babel-jest',
   },
   moduleNameMapper: {
-    "\\.(css|png|less|scss|sass)$": "identity-obj-proxy"
+    '\\.(css|png|less|scss|sass)$': 'identity-obj-proxy'
   }
 };
 
