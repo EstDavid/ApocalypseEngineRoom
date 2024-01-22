@@ -5,7 +5,8 @@ module.exports = {
   },
   "extends": [
     "eslint:recommended",
-    // "plugin:react/recommended",
+    "@typescript-eslint/parser",
+    "plugin:react/recommended",
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
@@ -24,7 +25,9 @@ module.exports = {
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": './tsconfig.json'
+    "tsconfigRootDir": __dirname,
+    "project": './tsconfig.json',
+    "sourceType": "module",
   },
   "plugins": [
     "@typescript-eslint"
