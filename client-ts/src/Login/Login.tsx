@@ -9,7 +9,7 @@ function Login({login, signup, loginIssue}:{login:ILogin, signup:ISignup,loginIs
   return (
     <div className='Login'>
 
-      <h1>Apocalypse Enginge Room</h1>
+      <h1>Apocalypse Engine Room</h1>
       <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}>
       </div>
       <div className='CredDiv'>

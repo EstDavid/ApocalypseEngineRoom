@@ -19,4 +19,13 @@ module.exports = {
     'indent': ['error', 2],
     'quotes': ['error', 'single']
   },
+  overrides: [
+    {
+      "files": ["tests/**/*"],
+      "plugins": ["jest"],
+      "env": {
+        "jest/globals": true
+      }
+    }
+  ]
 }
