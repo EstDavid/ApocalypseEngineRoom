@@ -51,8 +51,7 @@ function RollResultView({roll, index, removeRoll}:{roll:DiceRoll, index:number, 
   return (
     <>
       <div className="RollResult">
-        {
-          diceIcons(rollsForIcons.rolls as RollResult[])}
+        {diceIcons(rollsForIcons.rolls as RollResult[])}
         <p>
           {roll.rolls.slice(1).map(m => `${m}`).join(' ')} = {roll.total}
         </p>

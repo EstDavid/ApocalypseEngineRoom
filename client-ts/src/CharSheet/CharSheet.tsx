@@ -164,7 +164,6 @@ function CharSheet({ client }: { client: AxiosInstance }) {
   const trackerHandlers = { updateTextTracker, updateCheckboxTracker };
 
   const toggleMoveAvailable = (toggledMove: IMove) => {
-    console.log('hi');
 
     client.post(`/api/characters/${queryParameters.get('CharID')}`, {
       'updatedField': 'moves',
@@ -263,7 +262,7 @@ function CharSheet({ client }: { client: AxiosInstance }) {
           {moves ?
             <>
               <h2>Basic Moves:</h2>
-              {moves.filter((m) => m.playbook == 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={() => { }} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
+              {moves.filter((m) => m.playbook == 'basic').map(m => <Move key={m.name} move={m} toggleMoveAvailable={toggleMoveAvailable} toggleMoveAddMod={toggleMoveAddMod} rollDice={rollDice}></Move>)}
 
               <h2>{charInfo.playbook} Moves:</h2>
               {charInfo.movesText ? <p>{charInfo.movesText}</p> : ''}

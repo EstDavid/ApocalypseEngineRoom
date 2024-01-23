@@ -14,11 +14,12 @@ function Login({
 }) {
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
-  return (
+  return ( //TODO add logo to logodiv without breaking tests
     <div className="Login">
       <h1>Apocalypse Engine Room</h1>
       <div className="LogoDiv">
-        { <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}/> }
+        {/* { <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}/> } */}
+
       </div>
       <div className="CredDiv">
         <div className="fieldDiv">
