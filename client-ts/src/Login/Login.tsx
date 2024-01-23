@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
-import logo from '../assets/logo.png';
+// import logo from '../assets/logo.png';
 import { LoginIssue, ILogin, ISignup } from '../types';
 
 function Login({
@@ -30,6 +30,7 @@ function Login({
             defaultValue={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete="off"
+            placeholder='enter username'
           />
         </div>
         <div className="fieldDiv">
@@ -41,18 +42,19 @@ function Login({
             defaultValue={password}
             onChange={(e) => setpassword(e.target.value)}
             autoComplete="off"
+            placeholder='enter password'
           />
         </div>
         {loginIssue.length ? <p className="WarningText">{loginIssue}</p> : ''}
         <div className="loginBtns">
-          <button
+          <button name='login' type='button'
             onClick={() => {
               login(username, password);
             }}
           >
             Log In
           </button>
-          <button
+          <button name='signup'
             onClick={() => {
               signup(username, password);
             }}
