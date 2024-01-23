@@ -31,10 +31,12 @@ function MyChars({ userID }: { userID: string }) {
 
   useEffect(() => {
     if (userID) {
-      charactersService.getAll().then((response) => {
-        setCharList(response.data);
-      });
-      // TODO Add catch statement and send error to store
+      charactersService
+        .getAll()
+        .then((characters) => {
+          setCharList(characters);
+        })
+        .catch((error) => console.log(error));
     }
   }, [userID]);
 
