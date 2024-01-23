@@ -1,11 +1,10 @@
-import bcrypt from 'bcrypt';
 import app from '../index';
 import supertest from 'supertest';
 import User from '../model/user';
 import Character from '../model/character';
 import mongoose from 'mongoose';
-import { character1, character2, saltRounds, user1, user2 } from './test.helpers';
-import { ICharacter, IUser } from '../types';
+import { character1, character2, user1 } from './test.helpers';
+import { IUser } from '../types';
 
 let cookie: string;
 let user: IUser | null;
@@ -19,8 +18,7 @@ describe('User tests', () => {
   beforeEach(async () => {
     await User.deleteMany();
     await Character.deleteMany();
-    // const hashedPassword = await bcrypt.hash(user1.password, saltRounds);
-    // await User.create({ name: user1.username, password: hashedPassword });
+
     const res = await request
       .post(`${usersApiUrl}/signup`,)
       .send(user1);
