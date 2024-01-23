@@ -5,10 +5,8 @@ module.exports = {
   },
   "extends": [
     "eslint:recommended",
-    "@typescript-eslint/parser",
-    "plugin:react/recommended",
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking'
   ],
   "overrides": [
     {
@@ -48,6 +46,6 @@ module.exports = {
     ],
     "no-case-declarations": "off",
     "@typescript-eslint/no-explicit-any": 2
-    // "@typescript-eslint/dot-notation": "error"
-  }
+  },
+  "ignorePatterns": [".eslintrc.js"]
 };
