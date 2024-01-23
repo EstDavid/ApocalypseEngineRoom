@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 import { FaUserPlus } from 'react-icons/fa6';
 import { FaHome, FaSignOutAlt } from 'react-icons/fa';
@@ -11,54 +10,62 @@ import MyChars from './MyChars/MyChars';
 import NewChar from './NewChar/NewChar';
 import Login from './Login/Login';
 import './App.css';
-import { ILogin, ISignup } from './types';
+import { User } from './types';
+import usersService from './services/users.ts';
 
 const client = axios.create({
   baseURL: 'http://localhost:3000'
 });
+
+const userLocalStorageKey = 'loggedAppocalypseUser';
 
 function App() {
   const [userID, setUserID] = useState('');
   const [loginIssue, setLoginIssue] = useState('');
 
   useEffect(() => {
-    const cookieID = Cookies.get('userID');
-    if (cookieID) setUserID(cookieID.slice(3, -1));
+    const loggedUserJSON = window.localStorage.getItem(userLocalStorageKey);
+
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUserID(user._id);
+    }
   }, []);
 
-  const login: ILogin = (username, password) => {
-    client
-      .post(
-        'api/users/login',
-        { username, password },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        if (response.data._id) {
-          setUserID(response.data._id);
-        } else {
-          setLoginIssue(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleLogin = async (username: string, password: string) => {
+    try {
+      const user: User = await usersService.login(username, password);
+
+      window.localStorage.setItem(userLocalStorageKey, JSON.stringify(user));
+
+      setUserID(user._id);
+    } catch (error) {
+      setLoginIssue(error as string);
+    }
   };
 
-  const signup: ISignup = (username, password) => {
-    client.post('api/users/signup', { username, password }).then((response) => {
-      if (response.data._id) {
-        setUserID(response.data._id);
-      } else {
-        setLoginIssue(response.data);
-      }
-    });
+  const handleSignup = async (username: string, password: string) => {
+    try {
+      const user: User = await usersService.signup(username, password);
+
+      window.localStorage.setItem(userLocalStorageKey, JSON.stringify(user));
+
+      setUserID(user._id);
+    } catch (error) {
+      setLoginIssue(error as string);
+    }
   };
 
-  const logout = () => {
-    client.post('api/users/logout', {}, { withCredentials: true }).then(() => {
+  const handleLogout = async () => {
+    try {
+      await usersService.logout();
+
+      window.localStorage.removeItem(userLocalStorageKey);
+
       setUserID('');
-    });
+    } catch (error) {
+      setLoginIssue(error as string);
+    }
   };
 
   return (
@@ -77,7 +84,7 @@ function App() {
               </div>
             </Link>
             <Link to="/">
-              <div className="NavBtn" onClick={logout}>
+              <div className="NavBtn" onClick={handleLogout}>
                 <FaSignOutAlt />
               </div>
             </Link>
@@ -92,14 +99,15 @@ function App() {
               userID.length ? (
                 <MyChars userID={userID} />
               ) : (
-                <Login login={login} signup={signup} loginIssue={loginIssue} />
+                <Login
+                  login={handleLogin}
+                  signup={handleSignup}
+                  loginIssue={loginIssue}
+                />
               )
             }
           />
-          <Route
-            path="/NewCharacter"
-            element={<NewChar userID={userID} client={client} />}
-          />
+          <Route path="/NewCharacter" element={<NewChar />} />
           <Route
             path="/CharacterSheet"
             element={<CharSheet client={client} />}
