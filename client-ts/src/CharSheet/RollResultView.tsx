@@ -12,7 +12,7 @@ import RollResults from '@dice-roller/rpg-dice-roller/types/results/RollResults.
 import RollResult from '@dice-roller/rpg-dice-roller/types/results/RollResult.js';
 import { IconType } from 'react-icons';
 
-interface ValToIcon {
+interface ValToIconType {
   1:IconType
   2:IconType
   3:IconType
@@ -21,7 +21,7 @@ interface ValToIcon {
   6:IconType
 }
 
-const valToIcon:ValToIcon = {
+const valToIcon:ValToIconType = {
   1: BsDice1Fill,
   2: BsDice2Fill,
   3: BsDice3Fill,
@@ -30,24 +30,30 @@ const valToIcon:ValToIcon = {
   6: BsDice6Fill
 };
 
-function dieStyle(dice:RollResults[], die:RollResult) {
+function dieStyle(dice:RollResult[], die:RollResult) {
   if (dice.length == 2) return 'Die';
   return die.modifierFlags == 'd' ? 'Die Dismiss' : 'Die Highlight';
 }
 
-function diceIcons(dice:RollResults[]) {
+function diceIcons(dice:RollResult[]) {
   return dice.map((die, i) => {
 
     const Icon = valToIcon[die.value as 1 | 2 | 3 | 4 | 5 | 6];
-    return < Icon key={i} className={dieStyle(dice, die as unknown as RollResult)}/>;
+    if (die.value){
+      console.log(die.value);
+      return <>
+        <Icon key={i} className={dieStyle(dice, die)} />
+      </>;}
   });
 }
 
 function RollResultView({roll, index, removeRoll}:{roll:DiceRoll, index:number, removeRoll:IRemoveRoll}) {
+  const rollsForIcons = roll.rolls[0] as RollResults;
   return (
     <>
       <div className="RollResult">
-        {Array.isArray(roll.rolls) && diceIcons(roll.rolls as RollResults[])}
+        {
+          diceIcons(rollsForIcons.rolls as RollResult[])}
         <p>
           {roll.rolls.slice(1).map(m => `${m}`).join(' ')} = {roll.total}
         </p>

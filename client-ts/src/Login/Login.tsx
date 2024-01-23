@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
-// import logo from '../assets/logo.png';
+import logo from '../assets/logo.png';
 import { LoginIssue, ILogin, ISignup } from '../types';
 
 function Login({
@@ -18,7 +18,7 @@ function Login({
     <div className="Login">
       <h1>Apocalypse Engine Room</h1>
       <div className="LogoDiv">
-        {/* <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}> */}
+        { <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}/> }
       </div>
       <div className="CredDiv">
         <div className="fieldDiv">

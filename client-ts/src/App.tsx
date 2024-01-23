@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   const login : ILogin = (username, password) => {
-    client.post('login', {username, password} , {withCredentials: true}).then((response) => {
+    client.post('api/users/login', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details' || response.data == 'User Already exists') setLoginIssue(response.data);
       else setUserID(response.data);
     }).catch((err) => {
@@ -39,7 +39,7 @@ function App() {
   };
 
   const signup : ISignup = (username, password) => {
-    client.post('signup', {username, password} , {withCredentials: true}).then((response) => {
+    client.post('api/users/signup', {username, password} , {withCredentials: true}).then((response) => {
       if (response.data == 'Wrong connection details') setLoginIssue(response.data);
       else setUserID(response.data);
     });
