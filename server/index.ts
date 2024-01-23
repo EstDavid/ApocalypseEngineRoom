@@ -32,13 +32,24 @@ mongoose.connect(MONGO_DB_URI)
 
 
 const app: Express = express();
-const secret = process.env.SECRET;
+const SECRET = process.env.SECRET;
 app.use(cookieParser());
 
-if (!secret) {
+if (!SECRET) {
   throw new Error('No secret provided');
 }
-app.use(session({ secret: secret }));
+app.use(session({
+  name: 'sid',
+  saveUninitialized: false,
+  resave: false,
+  secret: SECRET,
+  cookie: {
+    maxAge: 7 * 60 * 60 * 1000,
+    sameSite: true,
+    httpOnly: false,
+    secure: false
+  }
+}));
 
 app.use(cors({
   credentials: true,
