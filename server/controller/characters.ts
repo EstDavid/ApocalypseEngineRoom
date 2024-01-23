@@ -8,11 +8,13 @@ import { ISession } from './users';
 export const getChars = (req: CustomRequest<CookieOptions, unknown>, res: Response) => {
   void (async () => {
     try {
-      const { userID } = req.cookies;
+      const session = req.session as ISession;
 
-      if (!userID) { throw ('Bad Credendials'); }
+      const uid = session.uid;
 
-      const characters = await Character.find({ owner: userID }).select({ name: 1, playbook: 1, system: 1 });
+      if (!uid) { throw ('Bad Credentials'); }
+
+      const characters = await Character.find({ owner: uid }).select({ name: 1, playbook: 1, system: 1 });
 
       res.send(characters);
       res.status(201);
@@ -30,7 +32,7 @@ export const addChar = (req: CustomRequest<CookieOptions, ICharacter>, res: Resp
 
       const uid = session.uid;
 
-      if (!uid) { throw ('Bad Credendials'); }
+      if (!uid) { throw ('Bad Credentials'); }
 
       const { system, playbook, name, stats }: ICharacter = req.body;
       if ([system, playbook, name].some((field => typeof (field) != 'string'))) {
@@ -65,11 +67,13 @@ export const getCharById = (req: CustomRequest<CookieOptions, unknown>, res: Res
   void (async () => {
     try {
       const id = req.params.id;
-      const { userID } = req.cookies;
+      const session = req.session as ISession;
 
-      if (!userID) { throw ('Bad Credendials'); }
+      const uid = session.uid;
 
-      const character = await Character.findOne({ _id: id, owner: userID });
+      if (!uid) { throw ('Bad Credentials'); }
+
+      const character = await Character.findOne({ _id: id, owner: uid });
       res.send(character);
       res.status(201);
     } catch (err) {
@@ -83,18 +87,17 @@ export const updateChar = (req: CustomRequest<CookieOptions, UpdateCharacterMode
   void (async () => {
     try {
       const id = req.params.id;
-      const { userID } = req.cookies;
+      const session = req.session as ISession;
 
-      if (!userID) { throw ('Bad Credendials'); }
+      const uid = session.uid;
+
+      if (!uid) { throw ('Bad Credentials'); }
 
       const update: { [f: string]: string; } = {};
       const { newVal } = req.body;
-      //     if(!newVal) {
-      //       throw new Error('Update value not provided');
-      // }
       update[req.body.updatedField] = newVal;
 
-      const updatedCharacter = await Character.findOneAndUpdate({ _id: id, owner: userID }, update, { new: true });
+      const updatedCharacter = await Character.findOneAndUpdate({ _id: id, owner: uid }, update, { new: true });
 
       res.send(updatedCharacter);
       res.status(201);
@@ -109,11 +112,13 @@ export const deleteChar = (req: CustomRequest<CookieOptions, unknown>, res: Resp
   void (async () => {
     try {
       const id = req.params.id;
-      const { userID } = req.cookies;
+      const session = req.session as ISession;
 
-      if (!userID) { throw ('Bad Credendials'); }
+      const uid = session.uid;
 
-      await Character.findOneAndDelete({ _id: id, owner: userID });
+      if (!uid) { throw ('Bad Credentials'); }
+
+      await Character.findOneAndDelete({ _id: id, owner: uid });
 
       res.send('deleted');
       res.status(201);

@@ -38,6 +38,14 @@ app.use(cookieParser());
 if (!SECRET) {
   throw new Error('No secret provided');
 }
+
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_ORIGIN,
+  exposedHeaders: ['set-cookie']
+}));
+app.use(express.json());
+
 app.use(session({
   name: 'sid',
   saveUninitialized: false,
@@ -50,13 +58,6 @@ app.use(session({
     secure: false
   }
 }));
-
-app.use(cors({
-  credentials: true,
-  origin: process.env.CLIENT_ORIGIN,
-  exposedHeaders: ['set-cookie']
-}));
-app.use(express.json());
 
 app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);

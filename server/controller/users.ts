@@ -5,8 +5,6 @@ import { UserLogin } from '../types';
 import { Session } from 'express-session';
 const saltRounds = 10;
 
-
-
 export interface ISession extends Session {
   uid?: string;
 }
@@ -30,6 +28,7 @@ export const getUser = (req: Request, res: Response): void => {
         const passwordCheck = await bcrypt.compare(password, user.password);
         if (passwordCheck) {
           (req.session as ISession).uid = (user._id).toString();
+
           res.status(200).send(user);
         } else {
           res.status(401);
