@@ -19,6 +19,12 @@ export interface UserLogin {
   password: string;
 }
 
+export interface IUser {
+  _id: string;
+  name: string;
+  password: string;
+}
+
 export interface CookieOptions {
   name: string;
   value: string;
@@ -30,7 +36,7 @@ export interface CookieOptions {
   httpOnly?: boolean;
 }
 
-export interface Character {
+export interface ICharacter {
   name: string,
   system: string,
   playbook: string,
