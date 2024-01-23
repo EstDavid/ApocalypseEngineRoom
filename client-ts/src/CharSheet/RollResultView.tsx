@@ -40,7 +40,6 @@ function diceIcons(dice:RollResult[]) {
 
     const Icon = valToIcon[die.value as 1 | 2 | 3 | 4 | 5 | 6];
     if (die.value){
-      console.log(die.value);
       return <>
         <Icon key={i} className={dieStyle(dice, die)} />
       </>;}
