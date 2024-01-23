@@ -65,4 +65,25 @@ describe('User tests', () => {
       throw new Error('Character was not created');
     }
   });
+
+  test('gets all the characters from a user', async () => {
+    const res = await request
+      .get(`${charactersApiUrl}/`)
+      .set('Cookie', cookie);
+
+    const characterId = res.body;
+
+    console.log(characterId);
+
+
+    // const createdCharacter = await Character.findById(characterId);
+    // if (createdCharacter && user) {
+    //   expect(createdCharacter).toHaveProperty('_id');
+    //   expect(createdCharacter.name).toBe(character2.name);
+    //   expect(createdCharacter.owner).toBe(user._id.toString());
+    //   expect(createdCharacter.playbook).toBe(character2.playbook);
+    // } else {
+    //   throw new Error('Character was not created');
+    // }
+  });
 });
