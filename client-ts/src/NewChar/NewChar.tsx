@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import './NewChar.css';
 import Select from 'react-select';
 import { AxiosResponse } from 'axios';
-import * as characterService from '../services/characters';
+import charactersService from '../services/characters';
+import playbooksService from '../services/playbooks';
 import { Playbook } from '../types';
 
 function NewChar() {
@@ -18,7 +19,7 @@ function NewChar() {
   const [newCharName, setNewCharName] = useState('');
 
   useEffect(() => {
-    characterService.getPlaybooks().then((response: AxiosResponse) => {
+    playbooksService.getAll().then((response: AxiosResponse) => {
       setPlaybookList(response.data);
       const sysList = [
         ...new Set(response.data.map((pb: Playbook) => pb.systemName))
@@ -39,7 +40,7 @@ function NewChar() {
         stats: selectedPlaybook.statsOptions[selectedStatsIndex]
       };
 
-      const response = await characterService.create(newCharInfo);
+      const response = await charactersService.create(newCharInfo);
 
       // TODO check this url creation
       window.location.replace(

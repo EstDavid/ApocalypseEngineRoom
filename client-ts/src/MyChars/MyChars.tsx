@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import './MyChars.css';
 import CharCard from './CharCard';
-import * as characterService from '../services/characters';
+import charactersService from '../services/characters';
 import { ICharacter } from '../types';
 
 interface MyCharFilter {
@@ -31,7 +31,7 @@ function MyChars({ userID }: { userID: string }) {
 
   useEffect(() => {
     if (userID) {
-      characterService.getAll().then((response) => {
+      charactersService.getAll().then((response) => {
         setCharList(response.data);
       });
       // TODO Add catch statement and send error to store
@@ -39,7 +39,7 @@ function MyChars({ userID }: { userID: string }) {
   }, [userID]);
 
   const deleteChar = (id: string) => {
-    characterService.remove(id).then(() => {
+    charactersService.remove(id).then(() => {
       // TODO update status with the removed character
     });
   };
