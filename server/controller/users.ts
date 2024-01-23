@@ -65,7 +65,7 @@ export const addUser = (req: Request, res: Response): void => {
         await newUser.save();
 
         (req.session as ISession).uid = (newUser._id).toString();
-        res.status(201).send(newUser._id);
+        res.status(201).send(newUser);
       } else {
         res.status(409);
         res.send('User Already exists');

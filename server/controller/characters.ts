@@ -2,7 +2,8 @@ import { Response } from 'express';
 import Character from '../model/character';
 import Tracker from '../model/tracker';
 import Move from '../model/move';
-import { Character as CharacterType, CookieOptions, UpdateCharacterModel, CustomRequest } from '../types';
+import { ICharacter, CookieOptions, UpdateCharacterModel, CustomRequest } from '../types';
+import { ISession } from './users';
 
 export const getChars = (req: CustomRequest<CookieOptions, unknown>, res: Response) => {
   void (async () => {
@@ -22,14 +23,16 @@ export const getChars = (req: CustomRequest<CookieOptions, unknown>, res: Respon
   })();
 };
 
-export const addChar = (req: CustomRequest<CookieOptions, CharacterType>, res: Response) => {
+export const addChar = (req: CustomRequest<CookieOptions, ICharacter>, res: Response) => {
   void (async () => {
     try {
-      const { cookies }: { cookies: CookieOptions; } = req;
-      const userID: string | undefined = cookies.userID;
-      if (!userID) { throw ('Bad Credendials'); }
+      const session = req.session as ISession;
 
-      const { system, playbook, name, stats }: CharacterType = req.body;
+      const uid = session.uid;
+
+      if (!uid) { throw ('Bad Credendials'); }
+
+      const { system, playbook, name, stats }: ICharacter = req.body;
       if ([system, playbook, name].some((field => typeof (field) != 'string'))) {
         throw ('Bad Input');
       }
@@ -37,7 +40,7 @@ export const addChar = (req: CustomRequest<CookieOptions, CharacterType>, res: R
       const moves_response = await Move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
 
       const newChar = new Character({
-        owner: userID,
+        owner: uid,
         system,
         playbook,
         name,
@@ -49,8 +52,8 @@ export const addChar = (req: CustomRequest<CookieOptions, CharacterType>, res: R
       });
 
       await newChar.save();
-      res.send(newChar._id);
       res.status(201);
+      res.send(newChar._id);
     } catch (err) {
       console.log(err);
       res.status(400);

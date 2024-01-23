@@ -41,6 +41,7 @@ describe('User tests', () => {
     const createdUser = await User.findOne({ name: user2.username });
 
     if (createdUser) {
+      expect(createdUser).toHaveProperty('_id');
       expect(createdUser.name).toBe(user2.username);
 
       const passwordCompare = await bcrypt.compare(user2.password, createdUser.password);
