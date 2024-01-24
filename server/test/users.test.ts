@@ -79,9 +79,10 @@ describe('User tests', () => {
   });
 
   test('should handle logout', async () => {
-    await request.post(`${usersApiUrl}/login`,).send(user1);
+    const res1 = await request.post(`${usersApiUrl}/login`,).send(user1);
+    const cookie = res1.headers['set-cookie'];
 
-    const res2: Response = await request.post(`${usersApiUrl}/logout`);
+    const res2: Response = await request.post(`${usersApiUrl}/logout`).set('Cookie', cookie);
     expect(res2.status).toBe(200);
     expect(res2.text).toBe('cookie cleared');
   });
