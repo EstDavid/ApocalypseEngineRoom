@@ -7,7 +7,7 @@ const getTrackers = (req: Request, res: Response) => {
       const system = req.params.system;
       const playbook = req.params.playbook;
       res.send(await Tracker.find({ system, "playbook": { $in: ["basic", playbook] } }));
-      res.status(201);
+      res.status(200);
     } catch (err) {
       console.log(err);
       res.status(400);

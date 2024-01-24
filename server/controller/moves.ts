@@ -7,7 +7,7 @@ const getMoves = (req: Request, res: Response) => {
       const { system, playbook } = req.params;
 
       res.send(await Move.find({ system, "playbook": { $in: ["basic", playbook] } }));
-      res.status(201);
+      res.status(200);
     } catch (err) {
       console.log(err);
       res.status(400);

@@ -13,7 +13,7 @@ const getChars = (req: Request, res: Response) => {
         const characters = await Character.find({ owner: uid }).select({ name: 1, playbook: 1, system: 1 });
 
         res.send(characters);
-        res.status(201);
+        res.status(200);
       } else {
         throw new Error('User not found');
       }
