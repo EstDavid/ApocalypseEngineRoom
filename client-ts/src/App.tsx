@@ -24,7 +24,7 @@ const userLocalStorageKey = 'loggedAppocalypseUser';
 function App() {
   const [userID, setUserID] = useState('');
   const [loginIssue, setLoginIssue] = useState('');
-  const [muted, setMute] = useState(false);
+  const [volume, setVolume] = useState(true);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(userLocalStorageKey);
@@ -71,8 +71,8 @@ function App() {
     }
   };
 
-  const handleMute = () =>{
-    setMute(prev => !prev);
+  const handleVolume = () =>{
+    setVolume(prev => !prev);
   };
 
   return (
@@ -95,9 +95,9 @@ function App() {
                 <FaSignOutAlt />
               </div>
             </Link>
-            <div className='NavBtn MuteBtn' onClick={handleMute}>
+            <div className='NavBtn MuteBtn' onClick={handleVolume}>
 
-              {muted ? <FaVolumeXmark/> :<FaVolumeHigh/> }
+              {volume ? <FaVolumeHigh/> : <FaVolumeXmark/>}
 
             </div>
           </div>
@@ -122,7 +122,7 @@ function App() {
           <Route path="/NewCharacter" element={<NewChar />} />
           <Route
             path="/CharacterSheet"
-            element={<CharSheet client={client} />}
+            element={<CharSheet client={client} volume={volume}/>}
           />
         </Routes>
       </BrowserRouter>

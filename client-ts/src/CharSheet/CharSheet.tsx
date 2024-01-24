@@ -18,7 +18,7 @@ import {
   IRollDice, IRemoveRoll, ICharInfo, IMove
 } from '../types';
 
-function CharSheet({ client }: { client: AxiosInstance }) {
+function CharSheet({ client, volume }: { client: AxiosInstance, volume:boolean }) {
   const [charInfo, setCharInfo] = useState<ICharInfo>({
     'name': '',
     'systemName': '',
@@ -210,7 +210,9 @@ function CharSheet({ client }: { client: AxiosInstance }) {
     roll += moves.filter((m) => m.isAvailable && m.isModAdded).map((m) => modToText(m.mod as string)).join('');
     setRolls([...rolls, new DiceRoll(roll)]);
     setMoves(moves.map(m => { m.isModAdded = false; return m; }));
-    rollSounds[Math.floor(Math.random() * rollSounds.length)].play();
+    if (volume){
+      rollSounds[Math.floor(Math.random() * rollSounds.length)].play();
+    }
   };
 
   const removeRoll:IRemoveRoll = (rollIndex) => {
