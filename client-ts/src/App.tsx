@@ -55,6 +55,7 @@ function App() {
       await usersService.logout();
 
       setIsAuthenticated(false);
+      Cookies.remove('sid');
     } catch (error) {
       setLoginIssue(error as string);
     }
