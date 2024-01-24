@@ -81,21 +81,21 @@ function App() {
         {userID.length ? (
           <div className="NavBar">
             <Link to="/">
-              <div className="NavBtn">
+              <div className="NavBtn" role='button' aria-description='Character page'>
                 <FaHome />
               </div>
             </Link>
             <Link to="NewCharacter">
-              <div className="NavBtn">
+              <div className="NavBtn" role='button' aria-description='Add a new character'>
                 <FaUserPlus />
               </div>
             </Link>
             <Link to="/">
-              <div className="NavBtn" onClick={handleLogout}>
+              <div className="NavBtn" onClick={handleLogout} role='button' aria-description='Log out'>
                 <FaSignOutAlt />
               </div>
             </Link>
-            <div className='NavBtn MuteBtn' onClick={handleVolume}>
+            <div className='NavBtn MuteBtn' onClick={handleVolume} role='button' aria-description='Mutes dice rolling sound'>
 
               {volume ? <FaVolumeHigh/> : <FaVolumeXmark/>}
 
