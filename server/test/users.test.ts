@@ -60,8 +60,11 @@ describe('User tests', () => {
   test('should handle invalid login details', async () => {
     const res = await request.post(`${usersApiUrl}/login`,).send({});
     expect(res.status).toBe(400);
-
     expect(res.text).toBe('Invalid input format. Both username and password must be strings.');
+
+    const users = await User.find();
+
+    expect(users).toHaveLength(1);
   });
 
   test('should handle invalid username', async () => {
