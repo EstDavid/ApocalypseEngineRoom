@@ -52,8 +52,7 @@ const addChar = (req: Request, res: Response) => {
         });
 
         await newChar.save();
-        res.status(201);
-        res.send(newChar._id);
+        res.status(201).send(newChar._id);
       } else {
         throw new Error('User not found');
       }
@@ -72,11 +71,8 @@ const getCharById = (req: Request, res: Response) => {
         const id = req.params.id;
         const uid = req.user._id;
 
-        if (!uid) { throw ('Bad Credentials'); }
-
         const character = await Character.findOne({ _id: id, owner: uid });
-        res.send(character);
-        res.status(201);
+        res.status(200).send(character);
       } else {
         throw new Error('User not found');
       }
@@ -103,8 +99,7 @@ const updateChar = (req: Request, res: Response) => {
 
         const updatedCharacter = await Character.findOneAndUpdate({ _id: id, owner: uid }, update, { new: true });
 
-        res.send(updatedCharacter);
-        res.status(201);
+        res.status(201).send(updatedCharacter);
       } else {
         throw new Error('User not found');
       }
@@ -126,8 +121,7 @@ const deleteChar = (req: Request, res: Response) => {
 
         await Character.findOneAndDelete({ _id: id, owner: uid });
 
-        res.send('deleted');
-        res.status(204);
+        res.status(204).end();
       } else {
         throw new Error('User not found');
       }
