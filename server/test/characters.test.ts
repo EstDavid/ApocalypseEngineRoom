@@ -9,7 +9,7 @@ import { ICharacter, IUser } from '../types';
 let cookie: string;
 let user: IUser | null;
 
-describe('User tests', () => {
+describe('Characters test', () => {
   const request = supertest(app);
 
   const usersApiUrl = '/api/users';
