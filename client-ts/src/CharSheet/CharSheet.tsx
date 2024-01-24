@@ -71,7 +71,8 @@ function CharSheet({ client, volume }: { client: AxiosInstance, volume:boolean }
               return {
                 ...m,
                 isAvailable: move ? move.isAvailable : false
-              };})
+              };
+            })
           );
 
 

@@ -39,13 +39,15 @@ const addChar = (req: Request, res: Response) => {
         const trackers_response = await Tracker.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ value: 1 });
         const moves_response = await Move.find({ system, "playbook": { $in: ["basic", playbook] } }).select({ isAvailable: 1 });
 
+
+
         const newChar = new Character({
           owner: uid,
           system,
           playbook,
           name,
-          moves: trackers_response,
-          trackers: moves_response,
+          moves: moves_response,
+          trackers: trackers_response,
           stats,
           "charDescription": "",
           "notes": ""
