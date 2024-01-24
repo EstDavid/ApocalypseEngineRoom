@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { Session } from 'express-session';
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ export interface IUser {
   _id: string;
   name: string;
   password: string;
+}
+
+export interface ISession extends Session {
+  uid?: string;
 }
 
 export interface CookieOptions {
@@ -61,7 +66,10 @@ export interface UpdateCharacterModel {
   updatedField: string;
 }
 
-export interface CustomRequest<R, T> extends Request {
-  cookies: R;
-  body: T;
+export interface CustomRequest extends Request {
+  cookies: CookieOptions;
+  user?: IUser;
+  session: ISession;
 }
+
+export type CustomRequestAuth = Required<CustomRequest>;

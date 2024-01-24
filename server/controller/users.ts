@@ -1,13 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import User from '../model/user';
-import { UserLogin } from '../types';
-import { Session } from 'express-session';
+import { ISession, UserLogin } from '../types';
 const saltRounds = 10;
-
-export interface ISession extends Session {
-  uid?: string;
-}
 
 export const getUser = (req: Request, res: Response): void => {
   void (async () => {

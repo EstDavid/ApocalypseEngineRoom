@@ -1,12 +1,13 @@
-import { Router } from 'express';
+import { RequestHandler, Router } from 'express';
 import * as charactersController from '../controller/characters';
+import authMiddleware from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', charactersController.getChars);
-router.post('/', charactersController.addChar);
-router.get('/:id', charactersController.getCharById);
-router.post('/:id', charactersController.updateChar);
-router.delete('/:id', charactersController.deleteChar);
+router.get('/', authMiddleware as RequestHandler, charactersController.getChars);
+router.post('/', authMiddleware as RequestHandler, charactersController.addChar);
+router.get('/:id', authMiddleware as RequestHandler, charactersController.getCharById);
+router.post('/:id', authMiddleware as RequestHandler, charactersController.updateChar);
+router.delete('/:id', authMiddleware as RequestHandler, charactersController.deleteChar);
 
 export default router;
