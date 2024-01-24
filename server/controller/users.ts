@@ -4,7 +4,7 @@ import User from '../model/user';
 import { ISession, UserLogin } from '../types';
 const saltRounds = 10;
 
-export const getUser = (req: Request, res: Response): void => {
+const getUser = (req: Request, res: Response): void => {
   void (async () => {
     try {
       const { username, password }: UserLogin = req.body;
@@ -37,7 +37,7 @@ export const getUser = (req: Request, res: Response): void => {
   })();
 };
 
-export const addUser = (req: Request, res: Response): void => {
+const addUser = (req: Request, res: Response): void => {
   void (async () => {
     try {
       const { username, password }: UserLogin = req.body;
@@ -72,7 +72,7 @@ export const addUser = (req: Request, res: Response): void => {
   })();
 };
 
-export const logout = (_: Request, res: Response) => {
+const logout = (_: Request, res: Response) => {
   try {
     res
       .clearCookie('sid')
@@ -82,4 +82,10 @@ export const logout = (_: Request, res: Response) => {
     console.log(err);
     res.status(400);
   }
+};
+
+export default {
+  getUser,
+  addUser,
+  logout
 };

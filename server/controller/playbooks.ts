@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Playbook from '../model/playbook';
 
-export const getPlaybook = (req: Request, res: Response) => {
+const getPlaybook = (req: Request, res: Response) => {
   void (async () => {
     try {
       const systemName = req.params.system;
@@ -15,7 +15,7 @@ export const getPlaybook = (req: Request, res: Response) => {
   })();
 };
 
-export const getPlaybooks = (req: Request, res: Response) => {
+const getPlaybooks = (req: Request, res: Response) => {
   void (async () => {
     try {
       res.send(await Playbook.find({}).select({ name: 1, systemName: 1, statsOptions: 1, statOptionsText: 1, description: 1 }));
@@ -25,4 +25,9 @@ export const getPlaybooks = (req: Request, res: Response) => {
       res.status(400);
     }
   })();
+};
+
+export default {
+  getPlaybook,
+  getPlaybooks
 };

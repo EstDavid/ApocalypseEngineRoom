@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Tracker from '../model/tracker';
 
-export const getTrackers = (req: Request, res: Response) => {
+const getTrackers = (req: Request, res: Response) => {
   void (async () => {
     try {
       const system = req.params.system;
@@ -14,3 +14,5 @@ export const getTrackers = (req: Request, res: Response) => {
     }
   })();
 };
+
+export default { getTrackers };

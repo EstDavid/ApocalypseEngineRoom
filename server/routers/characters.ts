@@ -1,5 +1,5 @@
 import { RequestHandler, Router } from 'express';
-import * as charactersController from '../controller/characters';
+import charactersController from '../controller/characters';
 import authMiddleware from '../middleware/auth';
 
 const router = Router();

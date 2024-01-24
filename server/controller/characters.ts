@@ -4,7 +4,7 @@ import Tracker from '../model/tracker';
 import Move from '../model/move';
 import { ICharacter } from '../types';
 
-export const getChars = (req: Request, res: Response) => {
+const getChars = (req: Request, res: Response) => {
   void (async () => {
     try {
       if (req.user) {
@@ -24,7 +24,7 @@ export const getChars = (req: Request, res: Response) => {
   })();
 };
 
-export const addChar = (req: Request, res: Response) => {
+const addChar = (req: Request, res: Response) => {
   void (async () => {
     try {
       if (req.user) {
@@ -65,7 +65,7 @@ export const addChar = (req: Request, res: Response) => {
   })();
 };
 
-export const getCharById = (req: Request, res: Response) => {
+const getCharById = (req: Request, res: Response) => {
   void (async () => {
     try {
       if (req.user) {
@@ -87,7 +87,7 @@ export const getCharById = (req: Request, res: Response) => {
   })();
 };
 
-export const updateChar = (req: Request, res: Response) => {
+const updateChar = (req: Request, res: Response) => {
   void (async () => {
     try {
       if (req.user) {
@@ -115,7 +115,7 @@ export const updateChar = (req: Request, res: Response) => {
   })();
 };
 
-export const deleteChar = (req: Request, res: Response) => {
+const deleteChar = (req: Request, res: Response) => {
   void (async () => {
     try {
       if (req.user) {
@@ -136,4 +136,12 @@ export const deleteChar = (req: Request, res: Response) => {
       res.status(400);
     }
   })();
+};
+
+export default {
+  getChars,
+  addChar,
+  getCharById,
+  updateChar,
+  deleteChar
 };

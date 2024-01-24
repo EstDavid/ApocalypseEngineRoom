@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Move from '../model/move';
 
-export const getMoves = (req: Request, res: Response) => {
+const getMoves = (req: Request, res: Response) => {
   void (async () => {
     try {
       const { system, playbook } = req.params;
@@ -14,3 +14,5 @@ export const getMoves = (req: Request, res: Response) => {
     }
   })();
 };
+
+export default { getMoves };
