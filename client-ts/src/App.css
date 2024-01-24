@@ -23,6 +23,11 @@
   justify-content: center;
 }
 
+.MuteBtn {
+  margin-left: auto;
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
   background-color: brown;
   width: 13px;

@@ -71,6 +71,10 @@ function App() {
     }
   };
 
+  const handleMute = () =>{
+    setMute(prev => !prev);
+  };
+
   return (
     <>
       <BrowserRouter>
@@ -91,9 +95,11 @@ function App() {
                 <FaSignOutAlt />
               </div>
             </Link>
-            {/* <div className='MuteBtn' onClick={handleMute}>
+            <div className='NavBtn MuteBtn' onClick={handleMute}>
 
-            </div> */}
+              {muted ? <FaVolumeXmark/> :<FaVolumeHigh/> }
+
+            </div>
           </div>
         ) : (
           ''
