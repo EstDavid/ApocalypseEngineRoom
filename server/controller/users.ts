@@ -8,11 +8,6 @@ const getUser = (req: Request, res: Response): void => {
   void (async () => {
     try {
       const { username, password }: UserLogin = req.body;
-      if ([username, password].some((field => !(field && typeof (field) == 'string')))) {
-        return res
-          .status(400)
-          .send('Invalid input format. Both username and password must be strings.');
-      }
 
       const user = await User.findOne({ name: username });
 
@@ -41,10 +36,6 @@ const addUser = (req: Request, res: Response): void => {
   void (async () => {
     try {
       const { username, password }: UserLogin = req.body;
-      if ([username, password].some((field => typeof (field) != 'string'))) {
-        res.status(400);
-        res.send('Invalid input format. Both username and password must be strings.');
-      }
 
       const user = await User.findOne({ name: username });
 
