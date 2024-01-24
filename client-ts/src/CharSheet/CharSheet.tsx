@@ -73,6 +73,8 @@ function CharSheet({ client, volume }: { client: AxiosInstance, volume:boolean }
                 isAvailable: move ? move.isAvailable : false
               };})
           );
+
+
           setTrackers(trks.map((t:ITracker<ITrackerValueObj[] | string>) => {
             const tracker = partialCharInfo.trackers.find(
               (charT:ITracker<ITrackerValueObj[] | string>) => charT._id == t._id
