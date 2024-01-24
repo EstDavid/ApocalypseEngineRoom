@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { FaUserPlus } from 'react-icons/fa6';
 import { FaHome, FaSignOutAlt } from 'react-icons/fa';
+import { FaVolumeXmark, FaVolumeHigh  } from "react-icons/fa6";
+
 
 import CharSheet from './CharSheet/CharSheet';
 import MyChars from './MyChars/MyChars';
@@ -22,13 +24,14 @@ const userLocalStorageKey = 'loggedAppocalypseUser';
 function App() {
   const [userID, setUserID] = useState('');
   const [loginIssue, setLoginIssue] = useState('');
+  const [muted, setMute] = useState(false);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(userLocalStorageKey);
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUserID(user._id);
+      setUserID(user);
     }
   }, []);
 
@@ -88,6 +91,9 @@ function App() {
                 <FaSignOutAlt />
               </div>
             </Link>
+            {/* <div className='MuteBtn' onClick={handleMute}>
+
+            </div> */}
           </div>
         ) : (
           ''
