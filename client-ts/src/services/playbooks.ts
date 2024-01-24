@@ -8,7 +8,7 @@ const client = axios.create({
 const getAll = async () => {
   const response = await client.get('/', { withCredentials: true });
 
-  return response;
+  return response.data;
 };
 
 export default { getAll };

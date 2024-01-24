@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
-import logo from '../assets/logo.png';
+// import logo from '../assets/logo.png';
 import { LoginIssue, ILogin, ISignup } from '../types';
 
 function Login({
@@ -14,12 +14,12 @@ function Login({
 }) {
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
-  return ( //TODO add logo to logodiv without breaking tests
+  return (
+    //TODO add logo to logodiv without breaking tests
     <div className="Login">
       <h1>Apocalypse Engine Room</h1>
       <div className="LogoDiv">
         {/* { <div className='LogoDiv' style={{ backgroundImage: `url(${logo})`}}/> } */}
-
       </div>
       <div className="CredDiv">
         <div className="fieldDiv">
@@ -31,7 +31,7 @@ function Login({
             defaultValue={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete="off"
-            placeholder='enter username'
+            placeholder="enter username"
           />
         </div>
         <div className="fieldDiv">
@@ -43,19 +43,22 @@ function Login({
             defaultValue={password}
             onChange={(e) => setpassword(e.target.value)}
             autoComplete="off"
-            placeholder='enter password'
+            placeholder="enter password"
           />
         </div>
         {loginIssue.length ? <p className="WarningText">{loginIssue}</p> : ''}
         <div className="loginBtns">
-          <button name='login' type='button'
+          <button
+            name="login"
+            type="button"
             onClick={() => {
               login(username, password);
             }}
           >
             Log In
           </button>
-          <button name='signup'
+          <button
+            name="signup"
             onClick={() => {
               signup(username, password);
             }}

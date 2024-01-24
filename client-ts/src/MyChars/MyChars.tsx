@@ -12,7 +12,7 @@ interface MyCharFilter {
   options: { value: string; label: string }[];
 }
 
-function MyChars({ userID }: { userID: string }) {
+function MyChars() {
   const [charList, setCharList] = useState<ICharacter[]>([]);
   const [activeFilters, setActiveFilters] = useState<readonly MyCharFilter[]>(
     []
@@ -30,15 +30,13 @@ function MyChars({ userID }: { userID: string }) {
   ];
 
   useEffect(() => {
-    if (userID) {
-      charactersService
-        .getAll()
-        .then((characters) => {
-          setCharList(characters);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [userID]);
+    charactersService
+      .getAll()
+      .then((characters) => {
+        setCharList(characters);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const deleteChar = (id: string) => {
     charactersService.remove(id).then(() => {

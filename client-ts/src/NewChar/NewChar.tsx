@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './NewChar.css';
 import Select from 'react-select';
-import { AxiosResponse } from 'axios';
 import charactersService from '../services/characters';
 import playbooksService from '../services/playbooks';
 import { Playbook } from '../types';
@@ -19,10 +18,10 @@ function NewChar() {
   const [newCharName, setNewCharName] = useState('');
 
   useEffect(() => {
-    playbooksService.getAll().then((response: AxiosResponse) => {
-      setPlaybookList(response.data);
+    playbooksService.getAll().then((playbooks) => {
+      setPlaybookList(playbooks);
       const sysList = [
-        ...new Set(response.data.map((pb: Playbook) => pb.systemName))
+        ...new Set(playbooks.map((pb: Playbook) => pb.systemName))
       ].map((s) => {
         return { value: s as string, label: s as string };
       });
@@ -40,11 +39,11 @@ function NewChar() {
         stats: selectedPlaybook.statsOptions[selectedStatsIndex]
       };
 
-      const response = await charactersService.create(newCharInfo);
+      const newChar = await charactersService.create(newCharInfo);
 
       // TODO check this url creation
       window.location.replace(
-        `http://localhost:5173/CharacterSheet?CharID=${response.data}`
+        `http://localhost:5173/CharacterSheet?CharID=${newChar}`
       );
     }
   };
